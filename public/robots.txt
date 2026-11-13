@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://giuseppecorso.it/sitemap-index.xml

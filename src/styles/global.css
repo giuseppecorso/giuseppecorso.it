@@ -1,0 +1,75 @@
+:root {
+  --ink: #16202e;
+  --muted: #4a5566;
+  --bg: #ffffff;
+  --bg-soft: #f5f6f8;
+  --line: #dfe3ea;
+  --accent: #c2410c;        /* 5.2:1 on white */
+  --accent-dark: #9a3412;
+  --radius: 10px;
+  --max: 68rem;
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--bg);
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--accent); text-underline-offset: 3px; }
+a:hover { color: var(--accent-dark); }
+
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+h1, h2, h3 { line-height: 1.2; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2rem, 5vw, 3.25rem); margin: 0 0 1rem; }
+h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin: 0 0 1rem; }
+h3 { font-size: 1.25rem; margin: 0 0 .5rem; }
+
+.container { max-width: var(--max); margin: 0 auto; padding: 0 1rem; }
+.section { padding: 3.5rem 0; }
+.section--soft { background: var(--bg-soft); }
+.lead { font-size: 1.2rem; color: var(--muted); max-width: 40rem; }
+
+.skip-link { position: absolute; left: -999px; top: 0; background: var(--ink); color: #fff; padding: .5rem 1rem; z-index: 10; }
+.skip-link:focus { left: 1rem; color: #fff; }
+
+.btn {
+  display: inline-block;
+  padding: .8rem 1.4rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  text-decoration: none;
+  border: 2px solid var(--accent);
+}
+.btn--primary { background: var(--accent); color: #fff; }
+.btn--primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); color: #fff; }
+.btn--ghost { color: var(--accent); background: transparent; }
+.btn--ghost:hover { background: #fff4ed; }
+.btn-row { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
+
+.tags { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; padding: 0; margin: 0; }
+.tags li { font-size: .85rem; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 999px; padding: .15rem .65rem; color: var(--muted); }
+
+.grid { display: grid; gap: 1.25rem; }
+@media (min-width: 48rem) {
+  .grid--3 { grid-template-columns: repeat(3, 1fr); }
+  .grid--2 { grid-template-columns: repeat(2, 1fr); }
+}
+
+.card {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}

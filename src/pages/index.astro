@@ -1,0 +1,90 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import photo from '../assets/giuseppe-corso.png';
+import { SITE } from '../site';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: SITE.name,
+  url: 'https://giuseppecorso.it/',
+  email: `mailto:${SITE.email}`,
+  jobTitle: 'Sviluppatore web',
+  knowsAbout: ['Java', 'Spring Boot', 'Python', 'Angular', 'SQL', 'WordPress', 'WooCommerce', 'PrestaShop', 'Excel VBA'],
+  alumniOf: { '@type': 'CollegeOrUniversity', name: 'Università degli Studi di Palermo' },
+  sameAs: [SITE.github, SITE.linkedin, SITE.fiverr],
+};
+---
+
+<BaseLayout
+  title="Giuseppe Corso — Sviluppatore web Java, Python e WordPress"
+  description="Ingegnere con curriculum informatico: sviluppo applicazioni web con Java/Spring Boot, Python e Angular, e siti WordPress e WooCommerce. Progetti, demo e contatti."
+  jsonLd={jsonLd}
+>
+  <section class="section hero">
+    <div class="container hero-inner">
+      <div>
+        <h1>Costruisco software che fa risparmiare tempo.</h1>
+        <p class="lead">
+          Sono Giuseppe, ingegnere con curriculum informatico: sviluppo applicazioni web con Java/Spring Boot,
+          Python e Angular e le porto online, dal codice al server.
+        </p>
+        <p>
+          Dal 2013 realizzo siti e negozi online in WordPress e WooCommerce, e per quattro anni ho gestito un
+          e-commerce PrestaShop con migliaia di articoli. Il mio pallino: prendere un lavoro ripetitivo e
+          trasformarlo in uno strumento che lo fa al posto tuo.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="/progetti/">Guarda i progetti</a>
+          <a class="btn btn--ghost" href={`mailto:${SITE.email}`}>Scrivimi</a>
+        </div>
+      </div>
+      <Image
+        src={photo}
+        alt="Ritratto di Giuseppe Corso"
+        width={320}
+        height={320}
+        widths={[320, 640]}
+        sizes="(min-width: 48rem) 320px, 60vw"
+        loading="eager"
+        fetchpriority="high"
+        class="portrait"
+      />
+    </div>
+  </section>
+
+  <section class="section section--soft" aria-labelledby="ingressi">
+    <div class="container">
+      <h2 id="ingressi">Da dove vuoi partire?</h2>
+      <div class="grid grid--3">
+        <article class="card">
+          <h3><a href="/progetti/">Progetti</a></h3>
+          <p>Applicazioni che ho progettato e portato online: e-commerce full stack, analisi dati, automazioni. Con demo e codice.</p>
+          <a href="/progetti/">Vedi i progetti →</a>
+        </article>
+        <article class="card">
+          <h3>Prodotti</h3>
+          <p><strong>Kit Host Italia</strong> è il primo prodotto digitale a cui sto lavorando. In arrivo.</p>
+          <p class="soon">Pagina in preparazione</p>
+        </article>
+        <article class="card">
+          <h3><a href={SITE.fiverr} rel="noopener">Assistenza</a></h3>
+          <p>Hai un sito WordPress, WooCommerce o PrestaShop da sistemare o migliorare? Ti aiuto tramite Fiverr.</p>
+          <a href={SITE.fiverr} rel="noopener">Vai su Fiverr →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero-inner { display: grid; gap: 2rem; align-items: center; }
+  .portrait { border-radius: 50%; width: min(60vw, 320px); height: auto; aspect-ratio: 1; object-fit: cover; justify-self: center; }
+  @media (min-width: 48rem) {
+    .hero-inner { grid-template-columns: 1fr auto; gap: 3rem; }
+  }
+  .card h3 a { color: var(--ink); text-decoration: none; }
+  .card h3 a:hover { color: var(--accent); }
+  .soon { color: var(--muted); font-style: italic; margin-bottom: 0; }
+</style>
