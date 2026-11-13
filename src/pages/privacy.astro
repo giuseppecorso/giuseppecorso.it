@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../site';
+---
+
+<BaseLayout
+  title="Informativa sulla privacy — Giuseppe Corso"
+  description="Quali dati raccoglie giuseppecorso.it, perché, per quanto tempo e come chiederne la cancellazione. Nessun cookie di profilazione."
+>
+  <section class="section">
+    <div class="container prose">
+      <h1>Informativa sulla privacy</h1>
+      <p>Ultimo aggiornamento: 13 novembre 2026.</p>
+
+      <h2>Chi tratta i dati</h2>
+      <p>
+        Il titolare del trattamento è Giuseppe Corso. Per qualsiasi richiesta sui tuoi dati scrivi a
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+      </p>
+
+      <h2>Modulo "Avvisami quando esce"</h2>
+      <ul>
+        <li><strong>Dato raccolto:</strong> il tuo indirizzo email.</li>
+        <li><strong>Perché:</strong> per avvisarti quando il prodotto che hai scelto sarà disponibile.</li>
+        <li><strong>Base giuridica:</strong> il tuo consenso, che dai spuntando la casella del modulo e confermando con il link che ricevi per email. Senza conferma l'iscrizione non è attiva.</li>
+        <li><strong>Per quanto tempo:</strong> fino all'invio dell'avviso, oppure fino a quando ti cancelli.</li>
+        <li><strong>Come cancellarti:</strong> con il link presente in ogni email, oppure scrivendo a {SITE.email}.</li>
+      </ul>
+      <p>
+        La lista è gestita con listmonk, un software installato su un server amministrato direttamente dal titolare:
+        il tuo indirizzo non viene ceduto a servizi di email marketing né ad altri soggetti. Le email sono spedite
+        tramite il servizio di posta del dominio giuseppecorso.it.
+      </p>
+
+      <h2>Navigazione sul sito</h2>
+      <p>
+        Questo sito non usa cookie di profilazione e non installa cookie di terze parti. Il server web registra per
+        ragioni tecniche e di sicurezza i normali dati di accesso (indirizzo IP, data e ora, pagina richiesta, tipo di
+        browser), che non vengono usati per identificarti.
+      </p>
+
+      <h2>Statistiche di visita</h2>
+      <p>
+        Per sapere quante persone visitano il sito e quali pagine leggono uso Umami, un software di statistiche
+        installato su un server amministrato direttamente dal titolare. Umami non usa cookie, non salva nulla sul tuo
+        dispositivo, non ti segue su altri siti e non registra il tuo indirizzo IP: raccoglie solo dati aggregati
+        (pagina visitata, sito di provenienza, tipo di dispositivo e di browser, paese). I dati non vengono condivisi
+        con nessuno. Se nel browser hai attivato l'opzione "Do Not Track", la visita non viene contata.
+      </p>
+
+      <h2>Link esterni</h2>
+      <p>
+        Il sito contiene collegamenti a servizi esterni (GitHub, LinkedIn, Fiverr, siti dei clienti). Quando li segui
+        valgono le informative di quei servizi.
+      </p>
+
+      <h2>I tuoi diritti</h2>
+      <p>
+        Puoi chiedere in ogni momento di accedere ai tuoi dati, correggerli, cancellarli o limitarne l'uso, e puoi
+        revocare il consenso, scrivendo a <a href={`mailto:${SITE.email}`}>{SITE.email}</a>. Hai anche il diritto di
+        presentare un reclamo al Garante per la protezione dei dati personali (garanteprivacy.it).
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .prose { max-width: 44rem; }
+  .prose h2 { font-size: 1.35rem; margin-top: 2.25rem; }
+  .prose li { margin-bottom: .4rem; }
+</style>

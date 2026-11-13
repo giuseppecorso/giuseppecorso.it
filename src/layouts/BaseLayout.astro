@@ -37,7 +37,10 @@ const path = Astro.url.pathname;
     <meta property="og:image" content={ogImageUrl} />
     <meta name="twitter:card" content="summary" />
 
-    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    <!-- Umami: self-hosted, cookieless analytics -->
+    <script is:inline defer src="https://stat.giuseppecorso.it/script.js" data-website-id="a1721b8a-9c52-4b4e-9675-db90f69ee047" data-do-not-track="true"></script>
+
+    {jsonLd &&<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   </head>
   <body>
     <a class="skip-link" href="#main">Vai al contenuto</a>
@@ -47,7 +50,8 @@ const path = Astro.url.pathname;
         <nav aria-label="Principale">
           <ul>
             <li><a href="/progetti/" aria-current={path.startsWith('/progetti') ? 'page' : undefined}>Progetti</a></li>
-            <li><a href={SITE.fiverr} rel="noopener">Assistenza</a></li>
+            <li><a href="/kit-host-italia/" aria-current={path.startsWith('/kit-host-italia') ? 'page' : undefined}>Kit Host Italia</a></li>
+            <li><a href="/assistenza/" aria-current={path.startsWith('/assistenza') ? 'page' : undefined}>Assistenza</a></li>
             <li><a href={`mailto:${SITE.email}`}>Contatti</a></li>
           </ul>
         </nav>
@@ -66,6 +70,7 @@ const path = Astro.url.pathname;
           <li><a href={SITE.github} rel="noopener">GitHub</a></li>
           <li><a href={SITE.linkedin} rel="noopener">LinkedIn</a></li>
           <li><a href={SITE.fiverr} rel="noopener">Fiverr</a></li>
+          <li><a href="/privacy/">Privacy</a></li>
         </ul>
       </div>
     </footer>

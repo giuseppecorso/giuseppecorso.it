@@ -34,4 +34,18 @@ const clienti = defineCollection({
     }),
 });
 
-export const collections = { progetti, clienti };
+// Products: one Markdown file = one sales page at /<file-name>/.
+const prodotti = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/prodotti' }),
+  schema: z.object({
+    title: z.string(),
+    seoTitle: z.string(),
+    description: z.string(),
+    tagline: z.string(),
+    status: z.enum(['in-arrivo', 'disponibile']),
+    // listmonk list UUID for the "notify me" form (only while status is in-arrivo)
+    listId: z.string().optional(),
+  }),
+});
+
+export const collections = { progetti, clienti, prodotti };

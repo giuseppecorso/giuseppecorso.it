@@ -1,0 +1,52 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NotifyForm from '../components/NotifyForm.astro';
+
+// One page per file in src/content/prodotti/.
+export async function getStaticPaths() {
+  const prodotti = await getCollection('prodotti');
+  return prodotti.map((p) => ({ params: { prodotto: p.id }, props: { p } }));
+}
+
+const { p } = Astro.props;
+const { Content } = await render(p);
+const inArrivo = p.data.status === 'in-arrivo';
+---
+
+<BaseLayout title={p.data.seoTitle} description={p.data.description}>
+  <section class="section">
+    <div class="container">
+      {inArrivo && <p class="badge">In arrivo</p>}
+      <h1>{p.data.title}</h1>
+      <p class="lead">{p.data.tagline}</p>
+      <div class="body">
+        <Content />
+      </div>
+    </div>
+  </section>
+
+  {inArrivo && p.data.listId && (
+    <section class="section section--soft" aria-labelledby="avvisami">
+      <div class="container">
+        <h2 id="avvisami">Avvisami quando esce</h2>
+        <NotifyForm listId={p.data.listId} />
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .badge {
+    display: inline-block;
+    margin: 0 0 1rem;
+    padding: .2rem .8rem;
+    border-radius: 999px;
+    background: #fff4ed;
+    color: var(--accent-dark);
+    border: 1px solid #f3c9ae;
+    font-weight: 600;
+    font-size: .9rem;
+  }
+  .body { max-width: 40rem; }
+</style>

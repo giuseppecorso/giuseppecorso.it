@@ -1,0 +1,57 @@
+# listmonk (mailing list for the "notify me" form) — lives in /opt/listmonk on the VPS.
+# Based on the official compose file, pinned to a stable release.
+# POSTGRES_PASSWORD comes from the .env file next to this one (never committed).
+services:
+  app:
+    image: listmonk/listmonk:v6.2.0
+    container_name: listmonk_app
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:9000:9000"   # reachable only through the host nginx
+    networks:
+      - listmonk
+    hostname: lista.giuseppecorso.it
+    depends_on:
+      db:
+        condition: service_healthy
+    command: [sh, -c, "./listmonk --install --idempotent --yes --config '' && ./listmonk --upgrade --yes --config '' && ./listmonk --config ''"]
+    environment:
+      LISTMONK_app__address: 0.0.0.0:9000
+      LISTMONK_db__user: listmonk
+      LISTMONK_db__password: ${POSTGRES_PASSWORD}
+      LISTMONK_db__database: listmonk
+      LISTMONK_db__host: db
+      LISTMONK_db__port: 5432
+      LISTMONK_db__ssl_mode: disable
+      LISTMONK_db__max_open: 25
+      LISTMONK_db__max_idle: 25
+      LISTMONK_db__max_lifetime: 300s
+      TZ: Europe/Rome
+      LISTMONK_ADMIN_USER: ${LISTMONK_ADMIN_USER}           # first admin, created on first start only
+      LISTMONK_ADMIN_PASSWORD: ${LISTMONK_ADMIN_PASSWORD}
+    volumes:
+      - ./uploads:/listmonk/uploads:rw
+
+  db:
+    image: postgres:17-alpine
+    container_name: listmonk_db
+    restart: unless-stopped
+    networks:
+      - listmonk
+    environment:
+      POSTGRES_USER: listmonk
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: listmonk
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U listmonk"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    volumes:
+      - listmonk-data:/var/lib/postgresql/data
+
+networks:
+  listmonk:
+
+volumes:
+  listmonk-data:
