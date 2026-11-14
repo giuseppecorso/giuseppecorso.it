@@ -57,7 +57,7 @@ const path = Astro.url.pathname;
             <li><a href="/kit-host-italia/" aria-current={path.startsWith('/kit-host-italia') ? 'page' : undefined}>Kit Host Italia</a></li>
             <li><a href="/assistenza/" aria-current={path.startsWith('/assistenza') ? 'page' : undefined}>Assistenza</a></li>
             <li><a href="/chi-sono/" aria-current={path.startsWith('/chi-sono') ? 'page' : undefined}>Chi sono</a></li>
-            <li><a href={`mailto:${SITE.email}`}>Contatti</a></li>
+            <li><a href="/contatti/" aria-current={path.startsWith('/contatti') ? 'page' : undefined}>Contatti</a></li>
           </ul>
         </nav>
       </div>
