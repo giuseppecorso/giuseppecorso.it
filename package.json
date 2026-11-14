@@ -10,7 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "deploy": "powershell -NoProfile -ExecutionPolicy Bypass -File deploy/deploy.ps1"
+    "deploy": "powershell -NoProfile -ExecutionPolicy Bypass -File deploy/deploy.ps1",
+    "backup:pull": "powershell -NoProfile -ExecutionPolicy Bypass -File deploy/backup/pull-backup.ps1"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
