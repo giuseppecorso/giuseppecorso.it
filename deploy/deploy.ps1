@@ -3,6 +3,9 @@
 # Rollback: ssh in and point "current" to a previous folder in releases/.
 $ErrorActionPreference = 'Stop'
 
+# Windows' own tar: Git Bash ships a GNU tar that reads "C:" as a remote host.
+$tar = Join-Path $env:SystemRoot 'System32\tar.exe'
+
 $server   = if ($env:DEPLOY_SERVER) { $env:DEPLOY_SERVER } else { 'ubuntu@57.131.145.27' }
 $base     = '/var/www/giuseppecorso.it'
 $release  = Get-Date -Format 'yyyyMMdd-HHmmss'
@@ -13,7 +16,7 @@ npm run build
 if ($LASTEXITCODE -ne 0) { throw 'Build failed' }
 
 Write-Host "2/3 Upload"
-tar -czf $archive -C dist .
+& $tar -czf $archive -C dist .
 if ($LASTEXITCODE -ne 0) { throw 'tar failed' }
 scp -q $archive "${server}:/tmp/site-$release.tgz"
 if ($LASTEXITCODE -ne 0) { throw 'scp failed' }

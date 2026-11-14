@@ -10,10 +10,11 @@ const rendered = await Promise.all(progetti.map(async (p) => ({ p, Content: (awa
 
 <BaseLayout
   title="Progetti — Giuseppe Corso"
-  description="Progetti software di Giuseppe Corso: e-commerce Spring Boot e Angular, analisi statistica in Python, automazioni Excel/VBA. Più i siti WordPress realizzati per clienti."
+  description="Progetti software di Giuseppe Corso: e-commerce Spring Boot e Angular, analisi statistica in Python, automazioni Excel/VBA. Più i siti web che ho realizzato."
 >
   <section class="section">
     <div class="container">
+      <p class="eyebrow">Portfolio</p>
       <h1>Progetti</h1>
       <p class="lead">Per ogni progetto: il problema, cosa ho costruito, con quali tecnologie e dove vederlo.</p>
 
@@ -45,15 +46,16 @@ const rendered = await Promise.all(progetti.map(async (p) => ({ p, Content: (awa
 
   <section class="section section--soft" aria-labelledby="clienti">
     <div class="container">
-      <h2 id="clienti">Siti realizzati per clienti</h2>
-      <div class="grid grid--3">
+      <p class="eyebrow">Online</p>
+      <h2 id="clienti">Siti web realizzati</h2>
+      <div class="grid grid--2 sites">
         {clienti.map((c) => (
           <article class="card client">
             <Image
               src={c.data.screenshot}
               alt={c.data.screenshotAlt}
               widths={[400, 800]}
-              sizes="(min-width: 48rem) 33vw, 100vw"
+              sizes="(min-width: 48rem) 50vw, 100vw"
               class="shot"
             />
             <h3>{c.data.title}</h3>
@@ -62,7 +64,10 @@ const rendered = await Promise.all(progetti.map(async (p) => ({ p, Content: (awa
             <ul class="tags" aria-label="Tecnologie">
               {c.data.tech.map((t) => <li>{t}</li>)}
             </ul>
-            {c.data.url && <p class="visit"><a href={c.data.url} rel="noopener">Visita il sito →</a></p>}
+            <p class="visit">
+              {c.data.url && <a href={c.data.url} rel="noopener">Visita il sito →</a>}
+              {c.data.detailUrl && <a href={c.data.detailUrl}>Dettagli tecnici ↑</a>}
+            </p>
           </article>
         ))}
       </div>
@@ -72,16 +77,17 @@ const rendered = await Promise.all(progetti.map(async (p) => ({ p, Content: (awa
 
 <style>
   .projects { display: grid; gap: 1.5rem; margin-top: 2rem; }
-  .project h2 { font-size: 1.5rem; }
-  .project h3 { font-size: 1rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin-top: 1.25rem; }
+  .project h2 { font-size: 1.75rem; }
+  .project h3 { font-family: var(--font-body); font-size: .8rem; font-weight: 500; text-transform: uppercase; letter-spacing: .12em; color: var(--accent); margin-top: 1.5rem; }
   .summary { font-size: 1.1rem; }
   .note { font-style: italic; color: var(--muted); }
-  .links { list-style: none; padding: 0; margin: 1.25rem 0 0; display: flex; flex-wrap: wrap; gap: 1.25rem; font-weight: 600; }
+  .links { list-style: none; padding: 0; margin: 1.5rem 0 0; display: flex; flex-wrap: wrap; gap: 1.5rem; font-weight: 500; }
   .client { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
   .client > :not(.shot) { margin-left: 1.25rem; margin-right: 1.25rem; }
   .client h3 { margin-top: 1rem; }
   .client .tags { margin-bottom: 1rem; }
   .shot { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-bottom: 1px solid var(--line); }
-  .business { color: var(--muted); font-weight: 600; margin: 0; }
-  .visit { margin-top: auto; padding-bottom: 1.25rem; }
+  .business { color: var(--muted); font-size: .9rem; margin: 0; }
+  .visit { margin-top: auto; padding-bottom: 1.25rem; display: flex; flex-wrap: wrap; gap: 1.25rem; }
+  .sites { margin-top: 2rem; }
 </style>

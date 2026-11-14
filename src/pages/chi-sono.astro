@@ -1,0 +1,87 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import photo from '../assets/personaggio/personaggio-seduto.jpg';
+import { SITE } from '../site';
+---
+
+<BaseLayout
+  title="Chi sono — Giuseppe Corso, ingegnere e sviluppatore"
+  description="Giuseppe Corso: laurea in Ingegneria dell'Innovazione per le Imprese Digitali a Palermo, sviluppatore web con Java, Python e Angular, siti WordPress dal 2013."
+>
+  <section class="section">
+    <div class="container about">
+      <Image
+        src={photo}
+        alt="Giuseppe Corso disegnato a matita, seduto su un muretto con le gambe penzoloni"
+        widths={[400, 800]}
+        sizes="(min-width: 56rem) 400px, 75vw"
+        loading="eager"
+        fetchpriority="high"
+        class="photo"
+      />
+      <div class="text">
+        <p class="eyebrow">Chi sono</p>
+        <h1>Giuseppe Corso</h1>
+        <p class="lead">
+          Ingegnere con curriculum informatico. Costruisco applicazioni web e strumenti che tolgono lavoro
+          ripetitivo alle persone.
+        </p>
+
+        <h2>Il percorso</h2>
+        <ul class="timeline">
+          <li>
+            <span class="when">Dal 2013</span>
+            Realizzo siti aziendali e negozi online in WordPress e WooCommerce, con personalizzazioni in HTML, CSS e PHP e ottimizzazione per i motori di ricerca.
+          </li>
+          <li>
+            <span class="when">2018 – 2022</span>
+            Gestisco un e-commerce PrestaShop con cataloghi di migliaia di articoli: importazioni massive dai listini dei fornitori, pulizia dei dati, query SQL su ordini, clienti e resi.
+          </li>
+          <li>
+            <span class="when">2020 – 2024</span>
+            Laurea in Ingegneria dell'Innovazione per le Imprese Digitali, curriculum informatico, all'Università degli Studi di Palermo. Prova finale in Basi di dati.
+          </li>
+          <li>
+            <span class="when">Dal 2023</span>
+            Lavoro nel settore delle risorse umane (HR): gestisco flussi di dati su presenze e contratti e automatizzo le attività ripetitive con Python ed Excel/VBA: estrazione di dati da Excel e PDF, caricamenti massivi, controlli di quadratura e report mensili.
+          </li>
+          <li>
+            <span class="when">Oggi</span>
+            Accanto al lavoro sviluppo applicazioni con Java/Spring Boot, Python e Angular e le porto in produzione su un mio server.
+          </li>
+        </ul>
+
+        <h2>Come lavoro</h2>
+        <p>
+          Parto dal problema, non dalla tecnologia. Scrivo test e documento le decisioni. Realizzo progetti
+          AI-assisted, cioè con il supporto dell'intelligenza artificiale: requisiti, regole e collaudi restano miei,
+          e nei <a href="/progetti/">progetti</a> trovi scritto dove l'ho usata.
+        </p>
+        <p>Parlo italiano e inglese (livello B2).</p>
+
+        <div class="btn-row">
+          <a class="btn btn--primary" href={`mailto:${SITE.email}`}>Scrivimi</a>
+          <a class="btn btn--ghost" href={SITE.linkedin} rel="noopener">LinkedIn</a>
+          <a class="btn btn--ghost" href={SITE.github} rel="noopener">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about { display: grid; gap: 2.5rem; align-items: start; }
+  .photo { width: min(75vw, 400px); height: auto; justify-self: center; mix-blend-mode: multiply; margin-top: -2rem; }
+  @media (min-width: 56rem) {
+    .about { grid-template-columns: 400px 1fr; gap: 3.5rem; }
+    .photo { position: sticky; top: 2rem; }
+  }
+  h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); }
+  h2 { font-size: 1.6rem; margin-top: 2.75rem; }
+  .text p { max-width: 38rem; }
+  .timeline { list-style: none; padding: 0; margin: 0; max-width: 38rem; }
+  .timeline li { padding: 1rem 0; border-top: 1px solid var(--line); }
+  .timeline li:last-child { border-bottom: 1px solid var(--line); }
+  .when { display: block; font-size: .8rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-bottom: .25rem; }
+</style>

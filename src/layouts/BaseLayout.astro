@@ -1,16 +1,20 @@
 ---
-import { getImage } from 'astro:assets';
+import { getImage, Image } from 'astro:assets';
+import '@fontsource-variable/inter/wght.css';
+import '@fontsource-variable/fraunces/wght.css';
 import '../styles/global.css';
-import photo from '../assets/giuseppe-corso.png';
+import photo from '../assets/giuseppe-corso-ritratto.jpg';
+import avatar from '../assets/giuseppe-corso-avatar.jpg';
 import { SITE } from '../site';
 
 interface Props {
   title: string;
   description: string;
   jsonLd?: Record<string, unknown>;
+  noindex?: boolean;
 }
 
-const { title, description, jsonLd } = Astro.props;
+const { title, description, jsonLd, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = await getImage({ src: photo, width: 600, format: 'jpg' });
 const ogImageUrl = new URL(ogImage.src, Astro.site);
@@ -24,7 +28,7 @@ const path = Astro.url.pathname;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
@@ -52,6 +56,7 @@ const path = Astro.url.pathname;
             <li><a href="/progetti/" aria-current={path.startsWith('/progetti') ? 'page' : undefined}>Progetti</a></li>
             <li><a href="/kit-host-italia/" aria-current={path.startsWith('/kit-host-italia') ? 'page' : undefined}>Kit Host Italia</a></li>
             <li><a href="/assistenza/" aria-current={path.startsWith('/assistenza') ? 'page' : undefined}>Assistenza</a></li>
+            <li><a href="/chi-sono/" aria-current={path.startsWith('/chi-sono') ? 'page' : undefined}>Chi sono</a></li>
             <li><a href={`mailto:${SITE.email}`}>Contatti</a></li>
           </ul>
         </nav>
@@ -64,7 +69,10 @@ const path = Astro.url.pathname;
 
     <footer class="site-footer">
       <div class="container footer-inner">
-        <p>© {new Date().getFullYear()} {SITE.name}</p>
+        <p class="who">
+          <Image src={avatar} alt="Fotografia di Giuseppe Corso" width={44} height={44} densities={[1, 2]} class="avatar" loading="lazy" />
+          <span>© {new Date().getFullYear()} {SITE.name}</span>
+        </p>
         <ul>
           <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
           <li><a href={SITE.github} rel="noopener">GitHub</a></li>
@@ -80,11 +88,13 @@ const path = Astro.url.pathname;
 <style>
   .site-header { border-bottom: 1px solid var(--line); }
   .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-top: 1rem; padding-bottom: 1rem; }
-  .brand { font-weight: 700; font-size: 1.1rem; color: var(--ink); text-decoration: none; }
-  nav ul, .footer-inner ul { display: flex; flex-wrap: wrap; gap: 1.25rem; list-style: none; margin: 0; padding: 0; }
-  nav a { color: var(--ink); text-decoration: none; font-weight: 500; }
+  .brand { font-family: var(--font-display); font-weight: 400; font-size: 1.3rem; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; }
+  nav ul, .footer-inner ul { display: flex; flex-wrap: wrap; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
+  nav a { color: var(--ink); text-decoration: none; font-weight: 400; font-size: .95rem; }
   nav a:hover, nav a[aria-current='page'] { color: var(--accent); text-decoration: underline; }
   .site-footer { border-top: 1px solid var(--line); padding: 2rem 0; color: var(--muted); font-size: .95rem; }
   .footer-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; align-items: center; }
   .footer-inner p { margin: 0; }
+  .who { display: flex; align-items: center; gap: .75rem; }
+  .avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line); }
 </style>

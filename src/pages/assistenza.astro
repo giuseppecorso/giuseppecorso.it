@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import character from '../assets/personaggio/personaggio-attrezzi.jpg';
 import { SITE } from '../site';
 ---
 
@@ -7,42 +9,69 @@ import { SITE } from '../site';
   title="Assistenza WordPress, WooCommerce e PrestaShop — Giuseppe Corso"
   description="Assistenza per siti WordPress, negozi WooCommerce e PrestaShop: correzioni, personalizzazioni di temi e plugin, SEO tecnica, gestione del catalogo. Tramite Fiverr."
 >
-  <section class="section">
-    <div class="container">
-      <h1>Assistenza per il tuo sito</h1>
-      <p class="lead">
-        Lavoro con WordPress dal 2013. Se il tuo sito o il tuo negozio online ha bisogno di una mano, ecco dove posso aiutarti.
-      </p>
+  <section class="section intro">
+    <div class="container intro-inner">
+      <div>
+        <p class="eyebrow">Assistenza</p>
+        <h1>Il tuo sito ha bisogno di <span class="mark">una mano</span>?</h1>
+        <p class="lead">
+          Lavoro con WordPress dal 2013. Se il tuo sito o il tuo negozio online non fa quello che dovrebbe, ecco dove posso aiutarti.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href={SITE.fiverr} rel="noopener">Vai al mio profilo Fiverr</a>
+          <a class="btn btn--ghost" href={`mailto:${SITE.email}`}>Scrivimi una email</a>
+        </div>
+      </div>
+      <Image
+        src={character}
+        alt="Giuseppe Corso disegnato a matita con un portatile aperto in mano"
+        widths={[340, 680]}
+        sizes="(min-width: 48rem) 340px, 70vw"
+        loading="eager"
+        fetchpriority="high"
+        class="character"
+      />
+    </div>
+  </section>
 
+  <section class="section section--soft" aria-labelledby="servizi">
+    <div class="container">
+      <p class="eyebrow">Cosa faccio</p>
+      <h2 id="servizi">Tre piattaforme che conosco bene</h2>
       <div class="grid grid--3 services">
         <article class="card">
-          <h2>WordPress</h2>
+          <h3>WordPress</h3>
           <p>Personalizzazioni di temi, template e plugin in HTML, CSS e PHP. Ottimizzazione SEO tecnica e on-page.</p>
         </article>
         <article class="card">
-          <h2>WooCommerce</h2>
+          <h3>WooCommerce</h3>
           <p>Negozi online su WordPress: messa a punto, personalizzazioni e sistemazione di quello che non funziona come dovrebbe.</p>
         </article>
         <article class="card">
-          <h2>PrestaShop</h2>
+          <h3>PrestaShop</h3>
           <p>Gestione di cataloghi con migliaia di articoli: importazioni ed esportazioni massive da listini, pulizia e correzione dei dati.</p>
         </article>
       </div>
+    </div>
+  </section>
 
-      <h2 class="how">Come funziona</h2>
+  <section class="section">
+    <div class="container how">
+      <p class="eyebrow">Come funziona</p>
+      <h2>Semplice e tracciato</h2>
       <p>
         Gli incarichi passano da Fiverr: descrivi il problema, ti rispondo con tempi e costo, e il pagamento è gestito dalla piattaforma.
       </p>
-      <div class="btn-row">
-        <a class="btn btn--primary" href={SITE.fiverr} rel="noopener">Vai al mio profilo Fiverr</a>
-        <a class="btn btn--ghost" href={`mailto:${SITE.email}`}>Scrivimi una email</a>
-      </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
+  .intro-inner { display: grid; gap: 2.5rem; align-items: center; }
+  .character { justify-self: center; width: min(70vw, 340px); height: auto; mix-blend-mode: multiply; }
+  @media (min-width: 48rem) {
+    .intro-inner { grid-template-columns: 1fr auto; gap: 4rem; }
+  }
   .services { margin-top: 2rem; }
-  .services h2 { font-size: 1.25rem; }
-  .how { margin-top: 3rem; }
+  .how { max-width: 44rem; }
 </style>

@@ -1,8 +1,8 @@
 ---
-import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import photo from '../assets/giuseppe-corso.png';
 import { SITE } from '../site';
+import { Image } from 'astro:assets';
+import character from '../assets/personaggio/personaggio-benvenuto.jpg';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -25,12 +25,13 @@ const jsonLd = {
   <section class="section hero">
     <div class="container hero-inner">
       <div>
-        <h1>Costruisco software che fa risparmiare tempo.</h1>
+        <p class="eyebrow">Giuseppe Corso · sviluppatore</p>
+        <h1>Costruisco software che fa <span class="mark">risparmiare tempo</span>.</h1>
         <p class="lead">
           Sono Giuseppe, ingegnere con curriculum informatico: sviluppo applicazioni web con Java/Spring Boot,
           Python e Angular e le porto online, dal codice al server.
         </p>
-        <p>
+        <p class="more">
           Dal 2013 realizzo siti e negozi online in WordPress e WooCommerce, e per quattro anni ho gestito un
           e-commerce PrestaShop con migliaia di articoli. Il mio pallino: prendere un lavoro ripetitivo e
           trasformarlo in uno strumento che lo fa al posto tuo.
@@ -41,34 +42,36 @@ const jsonLd = {
         </div>
       </div>
       <Image
-        src={photo}
-        alt="Ritratto di Giuseppe Corso"
-        width={320}
-        height={320}
-        widths={[320, 640]}
-        sizes="(min-width: 48rem) 320px, 60vw"
+        src={character}
+        alt="Giuseppe Corso disegnato a matita, a braccia conserte, con la polo verde"
+        widths={[360, 720]}
+        sizes="(min-width: 48rem) 360px, 70vw"
         loading="eager"
         fetchpriority="high"
-        class="portrait"
+        class="character"
       />
     </div>
   </section>
 
   <section class="section section--soft" aria-labelledby="ingressi">
     <div class="container">
+      <p class="eyebrow">Tre strade</p>
       <h2 id="ingressi">Da dove vuoi partire?</h2>
-      <div class="grid grid--3">
+      <div class="grid grid--3 doors">
         <article class="card">
+          <p class="num" aria-hidden="true">01</p>
           <h3><a href="/progetti/">Progetti</a></h3>
           <p>Applicazioni che ho progettato e portato online: e-commerce full stack, analisi dati, automazioni. Con demo e codice.</p>
           <a href="/progetti/">Vedi i progetti →</a>
         </article>
         <article class="card">
+          <p class="num" aria-hidden="true">02</p>
           <h3><a href="/kit-host-italia/">Prodotti</a></h3>
           <p><strong>Kit Host Italia</strong>: un template per la parte fiscale di B&B, case vacanze e strutture ricettive. In arrivo.</p>
           <a href="/kit-host-italia/">Fatti avvisare quando esce →</a>
         </article>
         <article class="card">
+          <p class="num" aria-hidden="true">03</p>
           <h3><a href="/assistenza/">Assistenza</a></h3>
           <p>Hai un sito WordPress, WooCommerce o PrestaShop da sistemare o migliorare? Ti aiuto tramite Fiverr.</p>
           <a href="/assistenza/">Scopri come →</a>
@@ -79,12 +82,15 @@ const jsonLd = {
 </BaseLayout>
 
 <style>
-  .hero-inner { display: grid; gap: 2rem; align-items: center; }
-  .portrait { border-radius: 50%; width: min(60vw, 320px); height: auto; aspect-ratio: 1; object-fit: cover; justify-self: center; }
+  .hero { padding-top: 5.5rem; padding-bottom: 5.5rem; }
+  .hero-inner { display: grid; gap: 2.5rem; align-items: center; }
+  .more { max-width: 38rem; color: var(--muted); }
+  .character { justify-self: center; width: min(70vw, 360px); height: auto; mix-blend-mode: multiply; }
   @media (min-width: 48rem) {
-    .hero-inner { grid-template-columns: 1fr auto; gap: 3rem; }
+    .hero-inner { grid-template-columns: 1fr auto; gap: 4rem; }
   }
+  .doors { margin-top: 2rem; }
+  .num { font-family: var(--font-display); font-size: 1rem; color: var(--accent); margin: 0 0 1.25rem; letter-spacing: .08em; }
   .card h3 a { color: var(--ink); text-decoration: none; }
   .card h3 a:hover { color: var(--accent); }
-  .soon { color: var(--muted); font-style: italic; margin-bottom: 0; }
 </style>

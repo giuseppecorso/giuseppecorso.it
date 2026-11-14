@@ -18,7 +18,7 @@ const progetti = defineCollection({
   }),
 });
 
-// Client websites: shown after software projects.
+// Websites I built (clients' and my own): shown after software projects.
 const clienti = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/clienti' }),
   schema: ({ image }) =>
@@ -31,6 +31,8 @@ const clienti = defineCollection({
       screenshot: image(),
       screenshotAlt: z.string(),
       url: z.string().optional(),
+      // optional link to the full technical card on the same page
+      detailUrl: z.string().optional(),
     }),
 });
 
