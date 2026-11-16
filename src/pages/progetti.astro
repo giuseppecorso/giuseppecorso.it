@@ -17,7 +17,7 @@ const rendered = await Promise.all(progetti.map(async (p) => ({ p, Content: (awa
       <p class="eyebrow">Portfolio</p>
       <h1>Progetti</h1>
       <p class="lead">
-        Scorri le schede e soffermati su quella che ti interessa: si apre con il problema, cosa ho costruito, le
+        Scorri le schede e clicca sulla lente di quella che ti interessa: trovi il problema, cosa ho costruito, le
         tecnologie e dove vederla.
       </p>
     </div>
@@ -47,7 +47,7 @@ const rendered = await Promise.all(progetti.map(async (p) => ({ p, Content: (awa
           <ul class="tags" aria-label="Tecnologie">
             {p.data.tech.slice(0, 5).map((t) => <li>{t}</li>)}
           </ul>
-          <button type="button" class="open" command="show-modal" commandfor={`scheda-${p.id}`}>Apri la scheda →</button>
+          <button type="button" class="open" command="show-modal" commandfor={`scheda-${p.id}`} aria-label="Apri la scheda con i dettagli"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M10.5 7.7v5.6M7.7 10.5h5.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Dettagli</span></button>
         </div>
       ))}
     </div>
@@ -79,7 +79,7 @@ const rendered = await Promise.all(progetti.map(async (p) => ({ p, Content: (awa
             <ul class="tags" aria-label="Tecnologie">
               {c.data.tech.slice(0, 4).map((t) => <li>{t}</li>)}
             </ul>
-            <button type="button" class="open" command="show-modal" commandfor={`scheda-sito-${c.id}`}>Apri la scheda →</button>
+            <button type="button" class="open" command="show-modal" commandfor={`scheda-sito-${c.id}`} aria-label="Apri la scheda con i dettagli"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M10.5 7.7v5.6M7.7 10.5h5.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Dettagli</span></button>
           </div>
         </div>
       ))}
@@ -143,24 +143,14 @@ const rendered = await Promise.all(progetti.map(async (p) => ({ p, Content: (awa
 
   // ---------- detail sheets ----------
   const sheets = [...document.querySelectorAll<HTMLDialogElement>('dialog.sheet')];
-  // where the mouse was when a sheet was opened by hovering, and whether it has reached the sheet since
-  let hover: { x: number; y: number; entered: boolean } | null = null;
-  /** Open the sheet in the middle of the screen. `from` is set when it was opened by hovering. */
-  const openSheet = (d: HTMLDialogElement, from?: { x: number; y: number }) => {
+  /** Open the sheet in the middle of the screen. */
+  const openSheet = (d: HTMLDialogElement) => {
     if (d.open) return;
     d.showModal();
     d.scrollTop = 0;
-    hover = from ? { ...from, entered: false } : null;
   };
 
   for (const d of sheets) {
-    d.addEventListener('close', () => { hover = null; });
-    // opened by hovering: it closes when the mouse wanders off, unless it went onto the sheet first
-    d.addEventListener('pointermove', (e) => {
-      if (!hover || e.pointerType !== 'mouse') return;
-      if (!outside(e, d)) hover.entered = true;
-      else if (hover.entered || Math.hypot(e.clientX - hover.x, e.clientY - hover.y) > 160) d.close();
-    });
     // click outside to close, where the closedby attribute is not supported yet
     if (!('closedBy' in HTMLDialogElement.prototype)) {
       let pressedOutside = false;
@@ -176,18 +166,6 @@ const rendered = await Promise.all(progetti.map(async (p) => ({ p, Content: (awa
     if (!button || !sheet) continue;
     // buttons open the sheet natively (command="show-modal"); script only where that is missing
     if (!nativeCommands) button.addEventListener('click', () => openSheet(sheet));
-
-    // mouse only: resting on a card for a moment "projects" its sheet
-    let timer = 0;
-    let at = { x: 0, y: 0 };
-    slide.addEventListener('pointerenter', (e) => {
-      if (e.pointerType !== 'mouse') return;
-      at = { x: e.clientX, y: e.clientY };
-      timer = window.setTimeout(() => { if (!anySheetOpen()) openSheet(sheet, at); }, 900);
-    });
-    slide.addEventListener('pointermove', (e) => { at = { x: e.clientX, y: e.clientY }; });
-    slide.addEventListener('pointerleave', () => clearTimeout(timer));
-    slide.addEventListener('pointerdown', () => clearTimeout(timer));
   }
 
   // "Dettagli tecnici": jump from a website sheet to the matching software sheet
@@ -331,7 +309,14 @@ const rendered = await Promise.all(progetti.map(async (p) => ({ p, Content: (awa
   .site :global(.shot) { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-bottom: 1px solid var(--line); }
 
   /* the whole card is the button */
-  .open { margin-top: auto; align-self: start; padding: 0; border: 0; background: none; font: inherit; font-weight: 500; color: var(--accent); cursor: pointer; }
+  /* magnifier button: the one way to open the sheet (the whole card is its click area) */
+  .open {
+    margin-top: auto; align-self: start; display: inline-flex; align-items: center; gap: .5rem;
+    padding: .55rem 1rem .55rem .75rem; border: 0; border-radius: 999px;
+    background: var(--cta); color: var(--ink); box-shadow: 0 2px 0 var(--cta-dark);
+    font: inherit; font-weight: 700; cursor: pointer;
+  }
+  .slide:hover .open { background: var(--cta-dark); }
   .open::after { content: ''; position: absolute; inset: 0; }
   .open:focus-visible { outline: none; }
   .slide:has(.open:focus-visible) { outline: 2px solid var(--accent); outline-offset: 3px; }
