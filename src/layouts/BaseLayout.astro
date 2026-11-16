@@ -58,7 +58,10 @@ const path = Astro.url.pathname;
           <Image src={logo} alt="" width={48} height={48} densities={[1, 2]} loading="eager" class="brand-mark" />
           <span class="brand-name"><span>Giuseppe</span> <b>Corso</b></span>
         </a>
-        <nav aria-label="Principale">
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Apri il menu" hidden>
+          <span class="bars" aria-hidden="true"></span>
+        </button>
+        <nav id="menu" aria-label="Principale">
           <ul>
             <li><a href="/progetti/" aria-current={path.startsWith('/progetti') ? 'page' : undefined}>Progetti</a></li>
             <li><a href="/kit-host-italia/" aria-current={path.startsWith('/kit-host-italia') ? 'page' : undefined}>Kit Host Italia</a></li>
@@ -69,6 +72,26 @@ const path = Astro.url.pathname;
         </nav>
       </div>
     </header>
+
+    <script is:inline>
+      // Small screens: the menu collapses behind a button. Without JavaScript it simply stays open.
+      (() => {
+        const button = document.querySelector('.menu-toggle');
+        const nav = document.getElementById('menu');
+        if (!button || !nav) return;
+        document.documentElement.classList.add('has-menu');
+        button.hidden = false;
+        const set = (open) => {
+          nav.classList.toggle('open', open);
+          button.setAttribute('aria-expanded', String(open));
+          button.setAttribute('aria-label', open ? 'Chiudi il menu' : 'Apri il menu');
+        };
+        button.addEventListener('click', () => set(button.getAttribute('aria-expanded') !== 'true'));
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && button.getAttribute('aria-expanded') === 'true') { set(false); button.focus(); }
+        });
+      })();
+    </script>
 
     <main id="main">
       <slot />
@@ -108,13 +131,6 @@ const path = Astro.url.pathname;
 
 <style>
   .site-header { border-bottom: 1px solid var(--line); }
-  .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-top: 1rem; padding-bottom: 1rem; }
-  .brand { display: flex; align-items: center; gap: .65rem; color: var(--ink); text-decoration: none; }
-  /* wordmark: one word, uppercase, first name in ink and surname in teal */
-  /* inline-flex drops the space between the two words: read "Giuseppe Corso", shown attached */
-  .brand-name { display: inline-flex; font-family: var(--font-body); font-weight: 800; font-size: 1.15rem; letter-spacing: .01em; text-transform: uppercase; line-height: 1; }
-  .brand-name b { font-weight: 800; color: var(--accent); }
-  .brand-mark { width: 48px; height: 48px; mix-blend-mode: multiply; }
   nav ul, .footer-inner ul { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
   nav a:not(.btn) { color: var(--ink); text-decoration: none; font-weight: 500; font-size: .95rem; }
   nav a:not(.btn):hover, nav a:not(.btn)[aria-current='page'] { color: var(--accent); text-decoration: underline; }
@@ -128,4 +144,33 @@ const path = Astro.url.pathname;
   .site-footer a:hover { color: var(--mint); }
   .footer-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; align-items: center; }
   .footer-inner p { margin: 0; }
+  /* hamburger: only below 48rem, and only when the script has run */
+  .menu-toggle { display: none; }
+  @media (max-width: 47.99rem) {
+    .header-inner { flex-wrap: wrap; }
+    .menu-toggle:not([hidden]) {
+      display: grid; place-items: center; width: 2.9rem; height: 2.9rem; padding: 0;
+      border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); cursor: pointer;
+    }
+    .bars, .bars::before, .bars::after { display: block; width: 1.35rem; height: 2px; border-radius: 2px; background: var(--ink); transition: transform .2s, opacity .2s; }
+    .bars { position: relative; }
+    .bars::before, .bars::after { content: ''; position: absolute; left: 0; }
+    .bars::before { top: -7px; }
+    .bars::after { top: 7px; }
+    .menu-toggle[aria-expanded='true'] .bars { background: transparent; }
+    .menu-toggle[aria-expanded='true'] .bars::before { transform: translateY(7px) rotate(45deg); }
+    .menu-toggle[aria-expanded='true'] .bars::after { transform: translateY(-7px) rotate(-45deg); }
+    :global(.has-menu) nav { display: none; flex-basis: 100%; }
+    :global(.has-menu) nav.open { display: block; }
+    nav ul { flex-direction: column; align-items: stretch; gap: 0; padding: .5rem 0 .75rem; }
+    nav a:not(.btn) { display: block; padding: .85rem .25rem; font-size: 1.1rem; border-bottom: 1px solid var(--line); }
+    nav .btn { display: block; text-align: center; margin-top: 1rem; }
+  }
+  .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-top: 1rem; padding-bottom: 1rem; }
+  .brand { display: flex; align-items: center; gap: .65rem; color: var(--ink); text-decoration: none; }
+  /* wordmark: one word, uppercase, first name in ink and surname in teal */
+  /* inline-flex drops the space between the two words: read "Giuseppe Corso", shown attached */
+  .brand-name { display: inline-flex; font-family: var(--font-body); font-weight: 800; font-size: 1.15rem; letter-spacing: .01em; text-transform: uppercase; line-height: 1; }
+  .brand-name b { font-weight: 800; color: var(--accent); }
+  .brand-mark { width: 48px; height: 48px; mix-blend-mode: multiply; }
 </style>
