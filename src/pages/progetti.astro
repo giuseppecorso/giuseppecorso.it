@@ -143,30 +143,23 @@ const rendered = await Promise.all(progetti.map(async (p) => ({ p, Content: (awa
 
   // ---------- detail sheets ----------
   const sheets = [...document.querySelectorAll<HTMLDialogElement>('dialog.sheet')];
-  const resetPosition = (d: HTMLDialogElement) => {
-    d.classList.remove('by-hover');
-    d.style.left = d.style.top = '';
-  };
-  /** Open centred (click, tap, keyboard) or "projected" from the card under the mouse (hover). */
-  const openSheet = (d: HTMLDialogElement, from?: Element) => {
+  // where the mouse was when a sheet was opened by hovering, and whether it has reached the sheet since
+  let hover: { x: number; y: number; entered: boolean } | null = null;
+  /** Open the sheet in the middle of the screen. `from` is set when it was opened by hovering. */
+  const openSheet = (d: HTMLDialogElement, from?: { x: number; y: number }) => {
     if (d.open) return;
-    resetPosition(d);
     d.showModal();
-    if (!from) return;
-    // hover: centre the sheet on the card, kept inside the viewport, so the mouse is already on it
-    const card = from.getBoundingClientRect();
-    const r = d.getBoundingClientRect();
-    const clamp = (v: number, max: number) => Math.max(12, Math.min(v, max - 12));
-    d.classList.add('by-hover');
-    d.style.left = `${clamp(card.left + card.width / 2 - r.width / 2, innerWidth - r.width)}px`;
-    d.style.top = `${clamp(card.top + card.height / 2 - r.height / 2, innerHeight - r.height)}px`;
+    d.scrollTop = 0;
+    hover = from ? { ...from, entered: false } : null;
   };
 
   for (const d of sheets) {
-    d.addEventListener('close', () => resetPosition(d));
-    // a sheet opened by hover closes as soon as the mouse leaves it
+    d.addEventListener('close', () => { hover = null; });
+    // opened by hovering: it closes when the mouse wanders off, unless it went onto the sheet first
     d.addEventListener('pointermove', (e) => {
-      if (d.classList.contains('by-hover') && e.pointerType === 'mouse' && outside(e, d)) d.close();
+      if (!hover || e.pointerType !== 'mouse') return;
+      if (!outside(e, d)) hover.entered = true;
+      else if (hover.entered || Math.hypot(e.clientX - hover.x, e.clientY - hover.y) > 160) d.close();
     });
     // click outside to close, where the closedby attribute is not supported yet
     if (!('closedBy' in HTMLDialogElement.prototype)) {
@@ -186,10 +179,13 @@ const rendered = await Promise.all(progetti.map(async (p) => ({ p, Content: (awa
 
     // mouse only: resting on a card for a moment "projects" its sheet
     let timer = 0;
+    let at = { x: 0, y: 0 };
     slide.addEventListener('pointerenter', (e) => {
       if (e.pointerType !== 'mouse') return;
-      timer = window.setTimeout(() => { if (!anySheetOpen()) openSheet(sheet, slide); }, 450);
+      at = { x: e.clientX, y: e.clientY };
+      timer = window.setTimeout(() => { if (!anySheetOpen()) openSheet(sheet, at); }, 900);
     });
+    slide.addEventListener('pointermove', (e) => { at = { x: e.clientX, y: e.clientY }; });
     slide.addEventListener('pointerleave', () => clearTimeout(timer));
     slide.addEventListener('pointerdown', () => clearTimeout(timer));
   }
@@ -263,10 +259,34 @@ const rendered = await Promise.all(progetti.map(async (p) => ({ p, Content: (awa
       carousel.addEventListener('pointerleave', () => { busy = false; });
       carousel.addEventListener('focusin', () => { busy = true; });
       carousel.addEventListener('focusout', () => { busy = false; });
-      setInterval(() => {
-        if (stopped || busy || document.hidden || anySheetOpen()) return;
-        go(1);
-      }, 4500);
+      // slow continuous drift (about 18 px per second), back and forth between the two ends.
+      // Snap and smooth scrolling are switched off only while drifting, so manual scrolling still snaps.
+      let direction = 1;
+      let x = track.scrollLeft;
+      let last = 0;
+      let drifting = false;
+      const setDrifting = (on: boolean) => {
+        if (on === drifting) return;
+        drifting = on;
+        track.style.scrollSnapType = on ? 'none' : '';
+        track.style.scrollBehavior = on ? 'auto' : '';
+        if (on) x = track.scrollLeft;
+      };
+      const frame = (now: number) => {
+        const dt = Math.min(now - (last || now), 50);
+        last = now;
+        if (stopped || busy || document.hidden || anySheetOpen()) setDrifting(false);
+        else {
+          setDrifting(true);
+          const max = track.scrollWidth - track.clientWidth;
+          x += direction * 0.018 * dt;
+          if (x >= max) { x = max; direction = -1; }
+          if (x <= 0) { x = 0; direction = 1; }
+          track.scrollLeft = x;
+        }
+        requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
     }
   }
 </script>
@@ -327,14 +347,16 @@ const rendered = await Promise.all(progetti.map(async (p) => ({ p, Content: (awa
 
   /* ---------- "projected" sheet ---------- */
   .sheet {
-    width: min(46rem, calc(100vw - 1.5rem)); max-height: min(86vh, 52rem);
+    /* always in the middle of the screen and never taller than it: long sheets scroll inside */
+    position: fixed; inset: 0; margin: auto;
+    width: min(38rem, calc(100vw - 1.5rem)); height: fit-content; max-height: min(76vh, 40rem);
+    overflow-y: auto; font-size: 1rem;
     padding: 0; border: 0; border-radius: 10px;
     background: var(--card); color: var(--ink);
     /* warm halo, as if lit by a projector */
     box-shadow: 0 0 0 1px rgba(255, 255, 255, .25), 0 0 90px 10px rgba(255, 224, 138, .38), 0 30px 80px rgba(0, 0, 0, .55);
   }
   .sheet:modal { overscroll-behavior: contain; }
-  .sheet.by-hover { position: fixed; margin: 0; }
   .sheet::backdrop {
     /* dim the page, a little lighter around the sheet */
     background: radial-gradient(ellipse 60% 55% at 50% 45%, rgba(60, 52, 30, .62), rgba(14, 16, 19, .86) 75%);
@@ -355,9 +377,10 @@ const rendered = await Promise.all(progetti.map(async (p) => ({ p, Content: (awa
     font-size: 1.5rem; line-height: 1; cursor: pointer;
   }
   .sheet-close button:hover { background: var(--ink); color: #fff; }
-  .sheet :global(.sheet-shot) { width: 100%; aspect-ratio: 16 / 8; object-fit: cover; object-position: top; border-bottom: 1px solid var(--line); }
-  .sheet-body { padding: 2rem 2rem 2.25rem; }
-  .sheet-body h2 { font-size: 2rem; padding-right: 2.5rem; }
+  .sheet :global(.sheet-shot) { width: 100%; aspect-ratio: 16 / 6; object-fit: cover; object-position: top; border-bottom: 1px solid var(--line); }
+  .sheet-body { padding: 1.5rem 1.75rem 1.75rem; }
+  .sheet-body h2 { font-size: 1.6rem; padding-right: 2.5rem; }
+  .sheet-body .summary { font-size: 1rem; }
   .sheet-body h3 { font-family: var(--font-body); font-size: .8rem; font-weight: 500; text-transform: uppercase; letter-spacing: .12em; color: var(--accent); margin-top: 1.5rem; }
   .note { font-style: italic; color: var(--muted); }
   .links { list-style: none; padding: 0; margin: 1.5rem 0 0; display: flex; flex-wrap: wrap; gap: 1.5rem; font-weight: 500; }

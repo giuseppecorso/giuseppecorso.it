@@ -1,0 +1,86 @@
+---
+// Real reviews copied verbatim from the Fiverr gig page (read on 16/11/2026).
+// Never edit the quotes and never add reviews that are not on Fiverr.
+import { SITE } from '../site';
+
+const average = '4,8';
+const reviews = [
+  {
+    user: 'fiv_francesco',
+    country: 'Italia',
+    stars: 5,
+    text: 'Persona super consigliata, competente e disponibile. Ha risolto problemi che altri non erano riusciti a risolvere. Consegna tempestiva e massima proattività. Ancora una volta consigliato!',
+    lang: 'it',
+  },
+  {
+    user: 'marcrocks284',
+    country: 'Spagna',
+    stars: 5,
+    text: 'Very happy with the outcome, extremely fast and efficient. Excellent work!',
+    lang: 'en',
+  },
+  {
+    user: 'albionthyka',
+    country: 'Italia',
+    stars: 4,
+    text: 'Sono soddisfatto, spero di continuare una collaborazione proficua per entrambi. Consegna rapida, il sito ha ripreso di funzionare, Ottimo.',
+    lang: 'it',
+  },
+  {
+    user: 'adceland',
+    country: 'Messico',
+    stars: 5,
+    text: 'Grazie Giuseppe a presto!',
+    lang: 'it',
+  },
+];
+---
+
+<section class="section band reviews" aria-labelledby="recensioni">
+  <div class="container">
+    <div class="reviews-head">
+      <div>
+        <p class="eyebrow">Recensioni</p>
+        <h2 id="recensioni">Cosa dice chi ha lavorato con me</h2>
+      </div>
+      <p class="score">
+        <span class="big" aria-hidden="true">{average}</span>
+        <span>
+          <span class="stars" aria-hidden="true">★★★★★</span><br />
+          <span class="visually-hidden">Voto medio {average} su 5. </span>{reviews.length} recensioni su Fiverr
+        </span>
+      </p>
+    </div>
+    <ul class="grid grid--2 list">
+      {
+        reviews.map((r) => (
+          <li class="card review">
+            <p class="stars" aria-label={`${r.stars} stelle su 5`}>
+              {'★'.repeat(r.stars)}<span class="off">{'★'.repeat(5 - r.stars)}</span>
+            </p>
+            <blockquote lang={r.lang}>{r.text}</blockquote>
+            <p class="who"><strong>{r.user}</strong> · {r.country}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="source"><a href={SITE.fiverr} rel="noopener">Leggi le recensioni originali su Fiverr →</a></p>
+  </div>
+</section>
+
+<style>
+  .reviews-head { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: end; justify-content: space-between; margin-bottom: 2rem; }
+  .reviews-head h2 { margin: 0; }
+  .score { display: flex; align-items: center; gap: .9rem; margin: 0; line-height: 1.35; }
+  .big { font-family: var(--font-display); font-size: 3.25rem; line-height: 1; }
+  .stars { color: var(--cta); letter-spacing: .12em; font-size: 1.1rem; }
+  .list { list-style: none; padding: 0; margin: 0; }
+  .review { display: flex; flex-direction: column; gap: .75rem; }
+  .review .stars { margin: 0; color: var(--cta-dark); }
+  .review .off { color: var(--line); }
+  blockquote { margin: 0; font-size: 1.1rem; line-height: 1.55; }
+  .who { margin: auto 0 0; color: var(--muted); font-size: .95rem; }
+  .source { margin: 1.75rem 0 0; }
+  .source a { color: #fff; font-weight: 500; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+</style>
