@@ -1,9 +1,9 @@
 ---
-import { getImage, Image } from 'astro:assets';
+import { Image } from 'astro:assets';
 import '@fontsource-variable/inter/wght.css';
 import '@fontsource-variable/fraunces/wght.css';
 import '../styles/global.css';
-import photo from '../assets/giuseppe-corso-ritratto.jpg';
+import logo from '../assets/logo-volto.png';
 import avatar from '../assets/giuseppe-corso-avatar.jpg';
 import { SITE } from '../site';
 
@@ -16,8 +16,7 @@ interface Props {
 
 const { title, description, jsonLd, noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const ogImage = await getImage({ src: photo, width: 600, format: 'jpg' });
-const ogImageUrl = new URL(ogImage.src, Astro.site);
+const ogImageUrl = new URL('/og.jpg', Astro.site);
 const path = Astro.url.pathname;
 ---
 
@@ -29,7 +28,9 @@ const path = Astro.url.pathname;
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <meta property="og:type" content="website" />
@@ -39,7 +40,9 @@ const path = Astro.url.pathname;
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImageUrl} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Umami: self-hosted, cookieless analytics -->
     <script is:inline defer src="https://stat.giuseppecorso.it/script.js" data-website-id="a1721b8a-9c52-4b4e-9675-db90f69ee047" data-do-not-track="true"></script>
@@ -50,7 +53,10 @@ const path = Astro.url.pathname;
     <a class="skip-link" href="#main">Vai al contenuto</a>
     <header class="site-header">
       <div class="container header-inner">
-        <a href="/" class="brand" aria-current={path === '/' ? 'page' : undefined}>Giuseppe Corso</a>
+        <a href="/" class="brand" aria-current={path === '/' ? 'page' : undefined}>
+          <Image src={logo} alt="" width={48} height={48} densities={[1, 2]} loading="eager" class="brand-mark" />
+          <span>{SITE.name}</span>
+        </a>
         <nav aria-label="Principale">
           <ul>
             <li><a href="/progetti/" aria-current={path.startsWith('/progetti') ? 'page' : undefined}>Progetti</a></li>
@@ -88,7 +94,8 @@ const path = Astro.url.pathname;
 <style>
   .site-header { border-bottom: 1px solid var(--line); }
   .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; padding-top: 1rem; padding-bottom: 1rem; }
-  .brand { font-family: var(--font-display); font-weight: 400; font-size: 1.3rem; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; }
+  .brand { display: flex; align-items: center; gap: .65rem; font-family: var(--font-display); font-weight: 400; font-size: 1.3rem; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; }
+  .brand-mark { width: 48px; height: 48px; mix-blend-mode: multiply; }
   nav ul, .footer-inner ul { display: flex; flex-wrap: wrap; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
   nav a { color: var(--ink); text-decoration: none; font-weight: 400; font-size: .95rem; }
   nav a:hover, nav a[aria-current='page'] { color: var(--accent); text-decoration: underline; }
