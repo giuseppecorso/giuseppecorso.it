@@ -1,0 +1,115 @@
+---
+import { Image } from 'astro:assets';
+import LandingPage from '../components/LandingPage.astro';
+import example from '../assets/clienti/sunset-erice-beach.png';
+import { SITE } from '../site';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Sito web per B&B e case vacanze',
+  serviceType: 'Realizzazione siti web per strutture ricettive',
+  provider: { '@type': 'Person', name: SITE.name, url: 'https://giuseppecorso.it/' },
+  areaServed: 'IT',
+  offers: { '@type': 'AggregateOffer', priceCurrency: 'EUR', lowPrice: 490, offerCount: 2 },
+};
+---
+
+<LandingPage
+  title="Sito web per B&B e case vacanze, online in 48 ore — Giuseppe Corso"
+  description="Sito web professionale per B&B, case vacanze e affittacamere: online in 48 ore dalla consegna di foto e testi, ottimizzato per Google e per il telefono. Da 490 €."
+  jsonLd={jsonLd}
+  eyebrow="Siti web per B&B e case vacanze"
+  headline={['Il sito del tuo B&B,', 'online in 48 ore.']}
+  lead="Un sito professionale e ottimizzato per Google, con cui gli ospiti ti scrivono direttamente. Tu mi mandi foto, logo e testi; io lo metto online in due giorni."
+  points={[
+    'Online in 48 ore dalla consegna del materiale',
+    'Pensato per il telefono e ottimizzato per Google',
+    'Non hai foto o testi pronti? Li preparo io',
+  ]}
+  plansTitle="Due formule, prezzo chiaro"
+  plansNote="I prezzi sono di partenza: quello definitivo lo trovi nel preventivo, gratuito, prima di iniziare. Le 48 ore si contano da quando ho ricevuto tutto il materiale."
+  plans={[
+    {
+      name: 'Sito base',
+      price: 'da 490 €',
+      note: 'Online in 48 ore. Il materiale lo fornisci tu.',
+      items: [
+        'Mi mandi foto, logo e testi',
+        'Tutte le sezioni che servono: alloggio, galleria, servizi, dove siamo, contatti',
+        'Modulo con cui gli ospiti ti chiedono disponibilità',
+        'Ottimizzato per Google e per il telefono',
+      ],
+    },
+    {
+      name: 'Sito completo',
+      price: 'da 890 €',
+      note: 'Testi e immagini li preparo io.',
+      featured: true,
+      items: [
+        'Tutto quello che c\'è nel sito base',
+        'Testi scritti da me a partire dalle tue informazioni',
+        'Immagini scelte e preparate, se non hai foto pronte',
+        'Più pagine: una per ogni alloggio o servizio',
+      ],
+    },
+  ]}
+  includedTitle="Un sito che lavora per te"
+  included={[
+    { title: 'Bello sul telefono', text: 'Molti ospiti cercano dal cellulare: il sito nasce per lo schermo piccolo e si adatta a quello grande.' },
+    { title: 'Veloce', text: 'Pagine leggere, che si aprono in fretta anche con una connessione lenta.' },
+    { title: 'Trovabile su Google', text: 'Titoli, descrizioni e dati strutturati curati pagina per pagina, sitemap e collegamento a Google Search Console.' },
+    { title: 'Richieste dirette', text: 'Gli ospiti ti scrivono dal modulo del sito: una richiesta che arriva a te, senza passare da un portale.' },
+    { title: 'Sicuro', text: 'Connessione protetta HTTPS, come si aspettano i visitatori e i motori di ricerca.' },
+    { title: 'Un solo interlocutore', text: 'Parli con chi il sito lo costruisce davvero: niente passaggi di mano.' },
+  ]}
+  steps={[
+    { title: 'Mi scrivi', text: 'Mi racconti la tua struttura dal modulo qui sotto: bastano due righe.' },
+    { title: 'Ricevi il preventivo', text: 'Gratuito e senza impegno, con prezzo e tempi scritti.' },
+    { title: 'Mi mandi il materiale', text: 'Foto, logo e testi. Se non li hai, li preparo io con la formula completa.' },
+    { title: 'Il sito va online', text: 'In 48 ore per il sito base. Lo guardi, mi dici cosa ritoccare e lo sistemo.' },
+  ]}
+  faq={[
+    { q: 'Davvero 48 ore?', a: 'Sì, per il sito base, contate da quando ho ricevuto foto, logo e testi. Se manca del materiale, o se lo preparo io, i tempi li trovi scritti nel preventivo.' },
+    { q: 'Non ho foto né testi: posso avere il sito lo stesso?', a: 'Sì. Con la formula completa scrivo i testi partendo dalle informazioni che mi dai e preparo le immagini.' },
+    { q: 'Gli ospiti possono contattarmi dal sito?', a: 'Sì: il sito ha un modulo con cui ti chiedono disponibilità e prezzo. Se ti serve altro, per esempio un calendario, scrivimelo e lo valuto nel preventivo.' },
+    { q: 'Ho già un dominio o un sito vecchio. È un problema?', a: 'No. Dimmelo nella richiesta: nel preventivo trovi come procedere.' },
+    { q: 'Ti occupi anche della parte fiscale?', a: 'No, ma sto preparando Kit Host Italia, un template per tenere in ordine la parte fiscale di B&B e case vacanze: lo trovi nel menu del sito.' },
+  ]}
+  topic="sito"
+  formTitle="Raccontami la tua struttura"
+  formLead="Dimmi che tipo di struttura hai e se hai già foto e testi: ti rispondo con un preventivo."
+>
+  <Image
+    slot="media"
+    src={example}
+    alt="Esempio: home page di un sito per casa vacanze, con vista aerea sul mare"
+    widths={[480, 960]}
+    sizes="(min-width: 56rem) 480px, 92vw"
+    loading="eager"
+    fetchpriority="high"
+    class="hero-shot"
+  />
+
+  <section slot="example" class="section section--soft" aria-labelledby="esempio">
+    <div class="container example">
+      <div>
+        <p class="eyebrow">Un esempio</p>
+        <h2 id="esempio">Sunset Erice Beach</h2>
+        <p class="lead">Casa vacanze. Sito realizzato da zero, con presentazione dell'appartamento, galleria e richiesta di preventivo.</p>
+        <div class="btn-row">
+          <a class="btn btn--solid" href="https://sunsetericebeach.it/" rel="noopener">Visita il sito</a>
+          <a class="btn btn--ghost" href="/progetti/#clienti">Altri siti realizzati</a>
+        </div>
+      </div>
+      <Image src={example} alt="" widths={[520, 1040]} sizes="(min-width: 56rem) 520px, 92vw" loading="lazy" class="example-shot" />
+    </div>
+  </section>
+</LandingPage>
+
+<style is:global>
+  .hero-shot, .example-shot { width: 100%; height: auto; aspect-ratio: 16 / 11; object-fit: cover; object-position: top; border-radius: 10px; border: 1px solid var(--line); box-shadow: 0 18px 40px rgba(35, 38, 43, .18); }
+  .hero-shot { transform: rotate(1.5deg); }
+  .example { display: grid; gap: 2.5rem; align-items: center; }
+  @media (min-width: 56rem) { .example { grid-template-columns: 1fr 1fr; gap: 4rem; } }
+</style>

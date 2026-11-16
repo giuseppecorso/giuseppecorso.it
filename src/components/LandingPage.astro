@@ -1,0 +1,172 @@
+---
+// Shared structure of the service landing pages: hero, prices, what's included,
+// steps, reviews, FAQ and the quote form. Each page passes its own texts.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from './ContactForm.astro';
+import Reviews from './Reviews.astro';
+
+interface Plan { name: string; price: string; note: string; items: string[]; featured?: boolean }
+interface Props {
+  title: string;
+  description: string;
+  jsonLd?: Record<string, unknown>;
+  eyebrow: string;
+  /** headline: plain text, then the part to highlight */
+  headline: [string, string];
+  lead: string;
+  points: string[];
+  plansTitle: string;
+  plansNote: string;
+  plans: Plan[];
+  includedTitle: string;
+  included: { title: string; text: string }[];
+  steps: { title: string; text: string }[];
+  faq: { q: string; a: string }[];
+  topic: 'sito' | 'riparazione';
+  formTitle: string;
+  formLead: string;
+}
+const p = Astro.props;
+---
+
+<BaseLayout title={p.title} description={p.description} jsonLd={p.jsonLd} cta={false}>
+  <section class="section hero">
+    <div class="container hero-inner">
+      <div>
+        <p class="eyebrow">{p.eyebrow}</p>
+        <h1>{p.headline[0]} <span class="mark">{p.headline[1]}</span></h1>
+        <p class="lead">{p.lead}</p>
+        <ul class="checklist">{p.points.map((x) => <li>{x}</li>)}</ul>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="#modulo">Chiedi un preventivo gratuito</a>
+          <a class="btn btn--ghost" href="#prezzi">Vedi i prezzi</a>
+        </div>
+      </div>
+      <div class="hero-media"><slot name="media" /></div>
+    </div>
+  </section>
+
+  <section class="section band" id="prezzi" aria-labelledby="prezzi-title">
+    <div class="container">
+      <p class="eyebrow">Prezzi</p>
+      <h2 id="prezzi-title">{p.plansTitle}</h2>
+      <div class={`grid grid--${p.plans.length} plans`}>
+        {p.plans.map((plan) => (
+          <article class:list={['card', 'plan', { featured: plan.featured }]}>
+            <h3>{plan.name}</h3>
+            <p class="price">{plan.price}</p>
+            <p class="plan-note">{plan.note}</p>
+            <ul class="checklist">{plan.items.map((x) => <li>{x}</li>)}</ul>
+            <a class="btn btn--primary" href="#modulo">Chiedi il preventivo</a>
+          </article>
+        ))}
+      </div>
+      <p class="plans-note">{p.plansNote}</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="incluso">
+    <div class="container">
+      <p class="eyebrow">Cosa ottieni</p>
+      <h2 id="incluso">{p.includedTitle}</h2>
+      <div class="grid grid--3 included">
+        {p.included.map((x) => (
+          <article class="card card--top">
+            <h3>{x.title}</h3>
+            <p>{x.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <slot name="example" />
+
+  <section class="section band band--sun" aria-labelledby="come">
+    <div class="container">
+      <p class="eyebrow">Come funziona</p>
+      <h2 id="come">Dalla richiesta al risultato</h2>
+      <ol class="steps">
+        {p.steps.map((s, i) => (
+          <li>
+            <span class="step-n" aria-hidden="true">{i + 1}</span>
+            <div>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <Reviews />
+
+  <section class="section" aria-labelledby="faq">
+    <div class="container faq">
+      <p class="eyebrow">Domande frequenti</p>
+      <h2 id="faq">Prima di scrivermi</h2>
+      {p.faq.map((f) => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="section section--soft" aria-labelledby="form-title">
+    <div class="container form-wrap">
+      <div>
+        <p class="eyebrow">Preventivo gratuito</p>
+        <h2 id="form-title">{p.formTitle}</h2>
+        <p class="lead">{p.formLead}</p>
+        <ul class="checklist">
+          <li>Preventivo gratuito e senza impegno</li>
+          <li>Ti rispondo io, per email</li>
+          <li>Prezzo e tempi scritti prima di iniziare</li>
+        </ul>
+      </div>
+      <div class="card form-card">
+        <ContactForm topic={p.topic} submitLabel="Chiedi il preventivo" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero { padding-top: 4rem; padding-bottom: 4rem; }
+  .hero-inner { display: grid; gap: 2.5rem; align-items: center; }
+  .hero h1 { font-size: clamp(2.1rem, 4.3vw, 3.2rem); }
+  .hero-media { justify-self: center; width: 100%; max-width: 30rem; }
+  @media (min-width: 56rem) { .hero-inner { grid-template-columns: 1.15fr 1fr; gap: 3.5rem; } }
+
+  .plans { margin-top: 2rem; align-items: stretch; }
+  .plan { display: flex; flex-direction: column; }
+  .plan.featured { border: 2px solid var(--cta); box-shadow: 0 14px 34px rgba(0, 0, 0, .22); }
+  .price { font-family: var(--font-display); font-size: 2.6rem; line-height: 1.1; margin: .25rem 0 .25rem; color: var(--accent-dark); }
+  .plan-note { color: var(--muted); margin: 0; }
+  .plan .checklist { margin: 1.25rem 0 1.75rem; }
+  .plan .checklist li::before { background-color: var(--accent); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10.5l3 3 6-7' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+  .plan .btn { margin-top: auto; align-self: start; }
+  .plans-note { margin: 1.5rem 0 0; color: #e9f5f3; max-width: 46rem; }
+
+  .included { margin-top: 2rem; }
+  .included p { margin: 0; }
+
+  .steps { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; gap: 1.5rem; }
+  @media (min-width: 48rem) { .steps { grid-template-columns: repeat(2, 1fr); gap: 2rem 3rem; } }
+  .steps li { display: flex; gap: 1rem; align-items: flex-start; }
+  .step-n { flex: none; width: 2.75rem; height: 2.75rem; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; font-family: var(--font-display); font-size: 1.3rem; }
+  .steps h3 { margin: .3rem 0 .35rem; font-size: 1.25rem; }
+  .steps p { margin: 0; }
+
+  .faq { max-width: 48rem; }
+  details { border-bottom: 1px solid var(--line); padding: 1rem 0; }
+  summary { cursor: pointer; font-weight: 600; font-size: 1.1rem; }
+  details p { margin: .75rem 0 0; }
+
+  .form-wrap { display: grid; gap: 2.5rem; align-items: start; }
+  @media (min-width: 56rem) { .form-wrap { grid-template-columns: 1fr 1.1fr; gap: 4rem; } }
+  .form-card { border-top: 4px solid var(--accent); box-shadow: 0 10px 30px rgba(35, 38, 43, .08); }
+</style>

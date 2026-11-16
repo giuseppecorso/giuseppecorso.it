@@ -1,0 +1,93 @@
+---
+import { Image } from 'astro:assets';
+import LandingPage from '../components/LandingPage.astro';
+import character from '../assets/personaggio/personaggio-attrezzi.jpg';
+import { SITE } from '../site';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Riparazione siti WordPress e WooCommerce',
+  serviceType: 'Assistenza e riparazione siti web',
+  provider: { '@type': 'Person', name: SITE.name, url: 'https://giuseppecorso.it/' },
+  areaServed: 'IT',
+  offers: { '@type': 'AggregateOffer', priceCurrency: 'EUR', lowPrice: 49, offerCount: 2 },
+};
+---
+
+<LandingPage
+  title="Riparazione siti WordPress e WooCommerce, da 49 € — Giuseppe Corso"
+  description="Il tuo sito WordPress o il tuo negozio WooCommerce non funziona? Trovo la causa e lo sistemo: errori, lentezza, plugin in conflitto. Diagnosi e preventivo gratuiti, interventi da 49 €."
+  jsonLd={jsonLd}
+  eyebrow="Riparazione siti WordPress"
+  headline={['Il tuo sito WordPress non funziona?', 'Lo rimetto in piedi.']}
+  lead="Errori dopo un aggiornamento, pagine lente, un negozio che non prende gli ordini: trovo la causa e la sistemo. Lavoro con WordPress dal 2013."
+  points={[
+    'Diagnosi e preventivo gratuiti',
+    'Interventi da 49 €',
+    'Anche WooCommerce e PrestaShop',
+  ]}
+  plansTitle="Quanto costa"
+  plansNote="Prima guardo il problema, poi ti dico cosa serve e quanto costa. Se non si può risolvere, lo sai prima di spendere."
+  plans={[
+    {
+      name: 'Intervento singolo',
+      price: 'da 49 €',
+      note: 'Un problema preciso, risolto.',
+      featured: true,
+      items: [
+        'Errore o pagina che non si apre',
+        'Grafica saltata dopo un aggiornamento',
+        'Plugin o tema in conflitto',
+        'Modulo o pulsante che non funziona',
+      ],
+    },
+    {
+      name: 'Intervento su misura',
+      price: 'su preventivo',
+      note: 'Per i lavori più ampi.',
+      items: [
+        'Sito lento da velocizzare',
+        'Negozio WooCommerce: carrello, pagamenti, spedizioni',
+        'Catalogo PrestaShop: importazioni e dati da sistemare',
+        'SEO tecnica e personalizzazioni di temi e plugin',
+      ],
+    },
+  ]}
+  includedTitle="Come lavoro sul tuo sito"
+  included={[
+    { title: 'Cerco la causa', text: 'Non copro il sintomo: capisco perché il problema è nato, così non torna alla prima occasione.' },
+    { title: 'Prima una copia', text: 'Prima di toccare qualsiasi cosa faccio una copia di sicurezza, per poter tornare indietro.' },
+    { title: 'Ti spiego cosa era', text: 'A lavoro finito ti dico in parole semplici cosa non andava e cosa ho cambiato.' },
+  ]}
+  steps={[
+    { title: 'Mi descrivi il problema', text: 'Dal modulo qui sotto: cosa succede, da quando, e l\'indirizzo del sito.' },
+    { title: 'Diagnosi e preventivo', text: 'Gratuiti e senza impegno: ti dico cosa serve, quanto costa e in quanto tempo.' },
+    { title: 'Intervengo', text: 'Con gli accessi che mi dai, dopo aver fatto una copia di sicurezza.' },
+    { title: 'Controlli tu', text: 'Verifichi che tutto funzioni come ti aspetti. Se serve un ritocco, lo faccio.' },
+  ]}
+  faq={[
+    { q: 'Quanto tempo ci vuole?', a: 'Dipende dal problema: i tempi li trovi nel preventivo. Diversi interventi li ho consegnati in un giorno, come puoi leggere nelle recensioni su Fiverr.' },
+    { q: 'Di quali accessi hai bisogno?', a: 'Dell\'accesso di amministrazione al sito e, per alcuni problemi, di quello all\'hosting. Li uso solo per l\'intervento: a lavoro finito puoi cambiare le password.' },
+    { q: 'Lavori anche su siti che non hai fatto tu?', a: 'Sì, intervengo anche su siti costruiti da altri.' },
+    { q: 'Posso passare da Fiverr?', a: 'Sì. Se preferisci che preventivo e pagamento siano gestiti dalla piattaforma, trovi il link al mio profilo Fiverr in fondo alla pagina.' },
+  ]}
+  topic="riparazione"
+  formTitle="Descrivimi il problema"
+  formLead="Scrivimi cosa succede e l'indirizzo del sito: ti rispondo con diagnosi e preventivo."
+>
+  <Image
+    slot="media"
+    src={character}
+    alt="Giuseppe Corso disegnato a matita con un portatile aperto in mano"
+    widths={[340, 680]}
+    sizes="(min-width: 56rem) 340px, 70vw"
+    loading="eager"
+    fetchpriority="high"
+    class="repair-character"
+  />
+</LandingPage>
+
+<style is:global>
+  .repair-character { width: min(70vw, 340px); height: auto; margin: 0 auto; mix-blend-mode: multiply; }
+</style>
