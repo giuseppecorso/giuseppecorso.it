@@ -14,7 +14,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    command: [sh, -c, "./listmonk --install --idempotent --yes --config '' && ./listmonk --upgrade --yes --config '' && ./listmonk --config ''"]
+    command: [sh, -c, "./listmonk --install --idempotent --yes --config '' && ./listmonk --upgrade --yes --config '' && ./listmonk --config '' --static-dir=/listmonk/static"]
     environment:
       LISTMONK_app__address: 0.0.0.0:9000
       LISTMONK_db__user: listmonk
@@ -31,6 +31,9 @@ services:
       LISTMONK_ADMIN_PASSWORD: ${LISTMONK_ADMIN_PASSWORD}
     volumes:
       - ./uploads:/listmonk/uploads:rw
+      # full copy of listmonk's static/ folder (same version as the image) with our
+      # email templates on top: see static-overrides/ in the repository
+      - ./static:/listmonk/static:ro
 
   db:
     image: postgres:17-alpine
