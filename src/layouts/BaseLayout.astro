@@ -4,7 +4,6 @@ import '@fontsource-variable/inter/wght.css';
 import '@fontsource-variable/fraunces/wght.css';
 import '../styles/global.css';
 import logo from '../assets/logo-volto.png';
-import avatar from '../assets/giuseppe-corso-avatar.jpg';
 import { SITE } from '../site';
 
 interface Props {
@@ -75,10 +74,7 @@ const path = Astro.url.pathname;
 
     <footer class="site-footer">
       <div class="container footer-inner">
-        <p class="who">
-          <Image src={avatar} alt="Fotografia di Giuseppe Corso" width={44} height={44} densities={[1, 2]} class="avatar" loading="lazy" />
-          <span>© {new Date().getFullYear()} {SITE.name}</span>
-        </p>
+        <p>© {new Date().getFullYear()} {SITE.name}</p>
         <ul>
           <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
           <li><a href={SITE.github} rel="noopener">GitHub</a></li>
@@ -102,6 +98,4 @@ const path = Astro.url.pathname;
   .site-footer { border-top: 1px solid var(--line); padding: 2rem 0; color: var(--muted); font-size: .95rem; }
   .footer-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; align-items: center; }
   .footer-inner p { margin: 0; }
-  .who { display: flex; align-items: center; gap: .75rem; }
-  .avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line); }
 </style>
