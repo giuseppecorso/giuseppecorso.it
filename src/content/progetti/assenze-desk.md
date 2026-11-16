@@ -6,7 +6,7 @@ problem: Ogni comunicazione di malattia richiedeva passaggi manuali tra posta, p
 tech: [Excel, VBA, Outlook, Word, Python (prototipo)]
 links:
   - { label: Codice del prototipo Python, url: 'https://github.com/giuseppecorso/assenze-desk' }
-note: Requisiti, regole, collaudi e decisioni sono miei; il codice è scritto con Claude Code.
+note: Progetto AI-assisted. Requisiti, regole, collaudi e decisioni sono miei.
 ---
 
 - Legge le mail, recupera il certificato dal portale INPS, compila il gestionale e prepara le bozze di risposta. L'operatore conferma sempre prima dell'invio.

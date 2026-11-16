@@ -7,7 +7,7 @@ tech: [Python, FastAPI, SQLAlchemy, Alembic, SQLite, Angular, API Claude, Docker
 links:
   - { label: App online, url: 'https://archie.giuseppecorso.it' }
   - { label: Codice, url: 'https://github.com/giuseppecorso/archie' }
-note: Sviluppato con Claude Code su mie specifiche.
+note: Progetto AI-assisted, sviluppato su mie specifiche.
 ---
 
 - Backend FastAPI con aggiornamenti pianificati dei dati: storico dal 2005 di 10 campionati e 33 competizioni seguite.
