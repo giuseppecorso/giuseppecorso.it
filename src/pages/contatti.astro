@@ -1,48 +1,65 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/ContactForm.astro';
 import { SITE } from '../site';
 ---
 
 <BaseLayout
   title="Contatti — Giuseppe Corso, sviluppatore web"
-  description="Come contattare Giuseppe Corso: email, LinkedIn, GitHub e Fiverr. Per proposte di lavoro, progetti software e assistenza su WordPress, WooCommerce e PrestaShop."
+  description="Scrivi a Giuseppe Corso: modulo di contatto, email, LinkedIn, GitHub e Fiverr. Per un sito web, la riparazione di un sito WordPress o una proposta di lavoro."
+  cta={false}
 >
   <section class="section">
-    <div class="container">
-      <p class="eyebrow">Contatti</p>
-      <h1>Parliamone: <span class="mark">scrivimi</span>.</h1>
-      <p class="lead">
-        Una proposta di lavoro, un progetto da costruire o un sito che non funziona come dovrebbe: scegli il canale più comodo per te.
-      </p>
-
-      <div class="email card">
-        <div>
-          <h2>Email</h2>
-          <p class="address">{SITE.email}</p>
-          <p class="hint">Per proposte di lavoro, collaborazioni e domande sui miei progetti.</p>
-        </div>
-        <div class="email-actions">
-          <button type="button" class="btn btn--primary" data-copy={SITE.email} hidden>Copia indirizzo</button>
-          <a class="btn btn--ghost" href={`mailto:${SITE.email}`}>Apri il programma di posta</a>
-          <span class="copied" role="status" aria-live="polite"></span>
-        </div>
+    <div class="container layout">
+      <div>
+        <p class="eyebrow">Contatti</p>
+        <h1>Parliamone: <span class="mark">scrivimi</span>.</h1>
+        <p class="lead">
+          Un sito da fare, un sito da sistemare o una proposta di lavoro: raccontami cosa ti serve e ti rispondo
+          per email con tempi e costi.
+        </p>
+        <ul class="checklist">
+          <li>Preventivo gratuito e senza impegno</li>
+          <li>Ti rispondo io, non un call center</li>
+          <li>Niente newsletter: uso la tua email solo per risponderti</li>
+        </ul>
       </div>
 
-      <div class="grid grid--3 channels">
+      <div class="card form-card">
+        <h2>Scrivimi da qui</h2>
+        <ContactForm />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft" aria-labelledby="altri">
+    <div class="container">
+      <p class="eyebrow">Oppure</p>
+      <h2 id="altri">Altri modi per trovarmi</h2>
+      <div class="grid grid--2 channels">
         <article class="card">
-          <h2>LinkedIn</h2>
+          <h3>Email</h3>
+          <p class="address">{SITE.email}</p>
+          <div class="email-actions">
+            <button type="button" class="btn btn--solid btn--small" data-copy={SITE.email} hidden>Copia indirizzo</button>
+            <a class="btn btn--ghost btn--small" href={`mailto:${SITE.email}`}>Apri il programma di posta</a>
+            <span class="copied" role="status" aria-live="polite"></span>
+          </div>
+        </article>
+        <article class="card card--link">
+          <h3><a class="stretch" href={SITE.linkedin} rel="noopener">LinkedIn</a></h3>
           <p>Per recruiter e aziende: il mio percorso professionale e un messaggio diretto.</p>
-          <a href={SITE.linkedin} rel="noopener">Vai al profilo LinkedIn →</a>
+          <p class="go" aria-hidden="true">Vai al profilo →</p>
         </article>
-        <article class="card">
-          <h2>GitHub</h2>
+        <article class="card card--link">
+          <h3><a class="stretch" href={SITE.github} rel="noopener">GitHub</a></h3>
           <p>Il codice sorgente dei miei progetti pubblici.</p>
-          <a href={SITE.github} rel="noopener">Vai al profilo GitHub →</a>
+          <p class="go" aria-hidden="true">Vai al profilo →</p>
         </article>
-        <article class="card">
-          <h2>Fiverr</h2>
-          <p>Per assistenza su WordPress, WooCommerce e PrestaShop: preventivo e pagamento passano dalla piattaforma.</p>
-          <a href={SITE.fiverr} rel="noopener">Vai al profilo Fiverr →</a>
+        <article class="card card--link">
+          <h3><a class="stretch" href={SITE.fiverr} rel="noopener">Fiverr</a></h3>
+          <p>Se preferisci un incarico con preventivo e pagamento gestiti dalla piattaforma.</p>
+          <p class="go" aria-hidden="true">Vai al profilo →</p>
         </article>
       </div>
     </div>
@@ -63,16 +80,15 @@ import { SITE } from '../site';
 </script>
 
 <style>
-  h2 { font-size: 1.4rem; margin: 0 0 .5rem; }
-  .email { margin-top: 3rem; display: grid; gap: 1.5rem; align-items: center; }
-  .address { font-family: var(--font-display); font-size: clamp(1.4rem, 4.5vw, 2rem); font-weight: 340; margin: 0 0 .5rem; overflow-wrap: anywhere; user-select: all; }
-  .hint { color: var(--muted); margin: 0; }
-  .email-actions { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
-  .email-actions .btn { font: inherit; font-weight: 500; cursor: pointer; }
-  .copied { color: var(--muted); font-size: .95rem; }
-  .channels { margin-top: 1.25rem; }
-  .channels p { margin: 0 0 1rem; }
-  @media (min-width: 48rem) {
-    .email { grid-template-columns: 1fr auto; padding: 2.25rem; }
-  }
+  .layout { display: grid; gap: 2.5rem; align-items: start; }
+  @media (min-width: 56rem) { .layout { grid-template-columns: 1fr 1.1fr; gap: 4rem; } }
+  .form-card { border-top: 4px solid var(--accent); box-shadow: 0 10px 30px rgba(35, 38, 43, .08); }
+  .form-card h2 { font-size: 1.5rem; margin-bottom: 1.25rem; }
+  .channels { margin-top: 2rem; }
+  .channels p { margin: 0 0 .9rem; }
+  .channels .go { margin: 0; }
+  .address { font-family: var(--font-display); font-size: 1.35rem; overflow-wrap: anywhere; user-select: all; }
+  .email-actions { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
+  .email-actions .btn { font: inherit; font-size: .95rem; font-weight: 500; cursor: pointer; }
+  .copied { color: var(--muted); font-size: .9rem; }
 </style>

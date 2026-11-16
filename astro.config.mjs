@@ -6,5 +6,6 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://giuseppecorso.it',
   trailingSlash: 'always',
-  integrations: [sitemap()],
+  // the form's "thank you" and "error" pages are not for search engines
+  integrations: [sitemap({ filter: (page) => !page.includes('/contatti/grazie/') && !page.includes('/contatti/errore/') })],
 });

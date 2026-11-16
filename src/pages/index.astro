@@ -1,8 +1,12 @@
 ---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../site';
-import { Image } from 'astro:assets';
 import character from '../assets/personaggio/personaggio-benvenuto.jpg';
+
+// three most relevant websites, shown as clickable tiles
+const works = (await getCollection('clienti')).sort((a, b) => a.data.order - b.data.order).slice(0, 3);
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -28,17 +32,17 @@ const jsonLd = {
         <p class="eyebrow">Giuseppe Corso · sviluppatore</p>
         <h1>Costruisco software che fa <span class="mark">risparmiare tempo</span>.</h1>
         <p class="lead">
-          Sono Giuseppe, ingegnere con curriculum informatico: sviluppo applicazioni web con Java/Spring Boot,
-          Python e Angular e le porto online, dal codice al server.
+          Sono Giuseppe, ingegnere con curriculum informatico: sviluppo applicazioni web e siti, e li porto
+          online, dal codice al server.
         </p>
-        <p class="more">
-          Dal 2013 realizzo siti e negozi online in WordPress e WooCommerce, e per quattro anni ho gestito un
-          e-commerce PrestaShop con migliaia di articoli. Il mio pallino: prendere un lavoro ripetitivo e
-          trasformarlo in uno strumento che lo fa al posto tuo.
-        </p>
+        <ul class="checklist">
+          <li>Applicazioni web su misura con Java/Spring Boot, Python e Angular</li>
+          <li>Siti e negozi online in WordPress e WooCommerce, dal 2013</li>
+          <li>Automazioni che fanno da sole il lavoro ripetitivo</li>
+        </ul>
         <div class="btn-row">
           <a class="btn btn--primary" href="/progetti/">Guarda i progetti</a>
-          <a class="btn btn--ghost" href={`mailto:${SITE.email}`}>Scrivimi</a>
+          <a class="btn btn--ghost" href="/contatti/">Scrivimi</a>
         </div>
       </div>
       <Image
@@ -53,44 +57,101 @@ const jsonLd = {
     </div>
   </section>
 
-  <section class="section section--soft" aria-labelledby="ingressi">
+  <section class="section band" aria-labelledby="ingressi">
     <div class="container">
       <p class="eyebrow">Tre strade</p>
       <h2 id="ingressi">Da dove vuoi partire?</h2>
       <div class="grid grid--3 doors">
-        <article class="card">
+        <article class="card card--link">
           <p class="num" aria-hidden="true">01</p>
-          <h3><a href="/progetti/">Progetti</a></h3>
+          <h3><a class="stretch" href="/progetti/">Progetti</a></h3>
           <p>Applicazioni che ho progettato e portato online: e-commerce full stack, analisi dati, automazioni. Con demo e codice.</p>
-          <a href="/progetti/">Vedi i progetti →</a>
+          <p class="go" aria-hidden="true">Vedi i progetti →</p>
         </article>
-        <article class="card">
+        <article class="card card--link">
           <p class="num" aria-hidden="true">02</p>
-          <h3><a href="/kit-host-italia/">Prodotti</a></h3>
+          <h3><a class="stretch" href="/kit-host-italia/">Prodotti</a></h3>
           <p><strong>Kit Host Italia</strong>: un template per la parte fiscale di B&B, case vacanze e strutture ricettive. In arrivo.</p>
-          <a href="/kit-host-italia/">Fatti avvisare quando esce →</a>
+          <p class="go" aria-hidden="true">Fatti avvisare quando esce →</p>
         </article>
-        <article class="card">
+        <article class="card card--link">
           <p class="num" aria-hidden="true">03</p>
-          <h3><a href="/assistenza/">Assistenza</a></h3>
-          <p>Hai un sito WordPress, WooCommerce o PrestaShop da sistemare o migliorare? Ti aiuto tramite Fiverr.</p>
-          <a href="/assistenza/">Scopri come →</a>
+          <h3><a class="stretch" href="/assistenza/">Assistenza</a></h3>
+          <p>Hai un sito WordPress, WooCommerce o PrestaShop da sistemare o migliorare? Ti aiuto io.</p>
+          <p class="go" aria-hidden="true">Scopri come →</p>
         </article>
       </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="lavori">
+    <div class="container">
+      <div class="works-head">
+        <div>
+          <p class="eyebrow">Lavori</p>
+          <h2 id="lavori">Siti che ho messo <span class="mark">online</span></h2>
+        </div>
+        <a class="btn btn--ghost" href="/progetti/#clienti">Vedi tutti i lavori</a>
+      </div>
+      <div class="grid grid--3 works">
+        {
+          works.map((w) => (
+            <article class="card card--link work">
+              <Image
+                src={w.data.screenshot}
+                alt={w.data.screenshotAlt}
+                widths={[400, 800]}
+                sizes="(min-width: 48rem) 320px, 92vw"
+                loading="lazy"
+                class="shot"
+              />
+              <div class="work-body">
+                <h3><a class="stretch" href="/progetti/#clienti">{w.data.title}</a></h3>
+                <p>{w.data.business}</p>
+                <ul class="tags">{w.data.tech.slice(0, 3).map((t) => <li>{t}</li>)}</ul>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section band band--sun" aria-labelledby="kit">
+    <div class="container kit">
+      <div>
+        <p class="eyebrow">In arrivo</p>
+        <h2 id="kit">Kit Host Italia</h2>
+        <p class="lead">
+          Un template per aiutare chi gestisce B&B, case vacanze e strutture ricettive a tenere in ordine la
+          parte fiscale.
+        </p>
+      </div>
+      <a class="btn btn--solid" href="/kit-host-italia/">Fatti avvisare quando esce</a>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .hero { padding-top: 5.5rem; padding-bottom: 5.5rem; }
+  .hero { padding-top: 4.5rem; padding-bottom: 4.5rem; }
   .hero-inner { display: grid; gap: 2.5rem; align-items: center; }
-  .more { max-width: 38rem; color: var(--muted); }
   .character { justify-self: center; width: min(70vw, 360px); height: auto; mix-blend-mode: multiply; }
   @media (min-width: 48rem) {
     .hero-inner { grid-template-columns: 1fr auto; gap: 4rem; }
   }
   .doors { margin-top: 2rem; }
   .num { font-family: var(--font-display); font-size: 1rem; color: var(--accent); margin: 0 0 1.25rem; letter-spacing: .08em; }
-  .card h3 a { color: var(--ink); text-decoration: none; }
-  .card h3 a:hover { color: var(--accent); }
+  .go { margin: 0; }
+
+  .works-head { display: flex; flex-wrap: wrap; gap: 1rem; align-items: end; justify-content: space-between; margin-bottom: 2rem; }
+  .works-head h2 { margin: 0; }
+  .work { padding: 0; overflow: hidden; }
+  .work :global(.shot) { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-bottom: 1px solid var(--line); }
+  .work-body { padding: 1.25rem 1.5rem 1.5rem; }
+  .work-body p { margin: 0 0 .9rem; color: var(--muted); }
+
+  .kit { display: grid; gap: 1.5rem; align-items: center; }
+  .kit h2 { margin-bottom: .5rem; }
+  .kit .lead { margin: 0; }
+  @media (min-width: 56rem) { .kit { grid-template-columns: 1fr auto; gap: 3rem; } }
 </style>

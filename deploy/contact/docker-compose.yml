@@ -1,0 +1,21 @@
+# Contact form endpoint — lives in /opt/contact on the VPS.
+# One small container: the official Python image running app.py (standard library only).
+# SMTP settings come from the .env file next to this one (never committed): see env.example.
+services:
+  contact:
+    image: python:3.13-alpine
+    container_name: contact_app
+    restart: unless-stopped
+    command: ["python", "/app/app.py"]
+    ports:
+      - "127.0.0.1:8087:8080"   # reachable only through the host nginx
+    env_file: .env
+    environment:
+      TZ: Europe/Rome
+    volumes:
+      - ./app.py:/app/app.py:ro
+    user: "65534:65534"         # nobody: the process needs no privileges
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 64m

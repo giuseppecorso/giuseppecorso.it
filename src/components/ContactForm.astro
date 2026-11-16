@@ -1,0 +1,81 @@
+---
+// Contact form: plain HTML POST to the small endpoint on the VPS (deploy/contact),
+// which emails the message. Works without JavaScript.
+interface Props {
+  /** pre-selected request type: sito | riparazione | lavoro | altro */
+  topic?: 'sito' | 'riparazione' | 'lavoro' | 'altro';
+  submitLabel?: string;
+}
+const { topic = 'altro', submitLabel = 'Invia il messaggio' } = Astro.props;
+const topics = [
+  ['sito', 'Un sito web nuovo'],
+  ['riparazione', 'Sistemare un sito esistente'],
+  ['lavoro', 'Una proposta di lavoro'],
+  ['altro', 'Altro'],
+];
+---
+
+<form class="contact-form" method="post" action="/api/contact" id="modulo">
+  <!-- honeypot: must stay empty, bots fill it -->
+  <div class="hp" aria-hidden="true">
+    <label for="cf-website">Lascia vuoto questo campo</label>
+    <input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <div class="two">
+    <div class="field">
+      <label for="cf-name">Nome</label>
+      <input id="cf-name" name="name" type="text" required minlength="2" maxlength="100" autocomplete="name" />
+    </div>
+    <div class="field">
+      <label for="cf-email">Email</label>
+      <input id="cf-email" name="email" type="email" required maxlength="254" autocomplete="email" placeholder="nome@esempio.it" />
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="cf-topic">Di cosa hai bisogno?</label>
+    <select id="cf-topic" name="topic">
+      {topics.map(([value, label]) => <option value={value} selected={value === topic}>{label}</option>)}
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="cf-message">Messaggio</label>
+    <textarea id="cf-message" name="message" rows="6" required minlength="10" maxlength="5000" placeholder="Raccontami in due righe cosa ti serve"></textarea>
+  </div>
+
+  <label class="consent">
+    <input type="checkbox" name="consent" required />
+    <span>
+      Acconsento all'uso dei miei dati per ricevere una risposta.
+      Ho letto l'<a href="/privacy/">informativa sulla privacy</a>.
+    </span>
+  </label>
+
+  <button class="btn btn--primary" type="submit">{submitLabel}</button>
+  <p class="hint">Ti rispondo per email. Nessuna newsletter, nessun dato ceduto ad altri.</p>
+</form>
+
+<style>
+  .contact-form { display: grid; gap: 1.1rem; }
+  .two { display: grid; gap: 1.1rem; }
+  @media (min-width: 40rem) { .two { grid-template-columns: 1fr 1fr; } }
+  .field label { display: block; font-weight: 600; margin-bottom: .35rem; }
+  input[type='text'], input[type='email'], select, textarea {
+    width: 100%;
+    font: inherit;
+    padding: .8rem 1rem;
+    border: 1px solid #7b8089;
+    border-radius: var(--radius);
+    background: #fff;
+    color: var(--ink);
+  }
+  textarea { resize: vertical; min-height: 8rem; }
+  input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+  .consent { display: flex; gap: .6rem; align-items: flex-start; font-size: .95rem; }
+  .consent input { width: 1.2rem; height: 1.2rem; margin-top: .2rem; flex: none; }
+  button { font: inherit; font-weight: 700; cursor: pointer; justify-self: start; }
+  .hint { color: var(--muted); font-size: .9rem; margin: 0; }
+  .hp { position: absolute; left: -9999px; }
+</style>

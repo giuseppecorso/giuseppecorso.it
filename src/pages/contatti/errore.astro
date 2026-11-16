@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../site';
+---
+
+<BaseLayout title="Messaggio non inviato — Giuseppe Corso" description="Il messaggio non è stato inviato." noindex cta={false}>
+  <section class="section">
+    <div class="container box">
+      <p class="eyebrow">Messaggio non inviato</p>
+      <h1>Qualcosa non ha <span class="mark">funzionato</span>.</h1>
+      <p class="lead">
+        Il messaggio non è partito. Controlla di aver compilato nome, email e messaggio e di aver spuntato la
+        casella del consenso, poi riprova. Se hai già inviato più messaggi, aspetta qualche minuto.
+      </p>
+      <p>In alternativa scrivimi direttamente a <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+      <div class="btn-row">
+        <a class="btn btn--primary" href="/contatti/#modulo">Riprova</a>
+        <a class="btn btn--ghost" href="/">Torna alla home</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .box { max-width: 46rem; }
+</style>

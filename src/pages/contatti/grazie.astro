@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Messaggio inviato — Giuseppe Corso" description="Il tuo messaggio è stato inviato." noindex cta={false}>
+  <section class="section">
+    <div class="container box">
+      <p class="eyebrow">Messaggio inviato</p>
+      <h1>Grazie, l'ho <span class="mark">ricevuto</span>.</h1>
+      <p class="lead">Ti rispondo per email all'indirizzo che hai indicato. Se non vedi la risposta, controlla anche la cartella dello spam.</p>
+      <div class="btn-row">
+        <a class="btn btn--primary" href="/progetti/">Guarda i progetti</a>
+        <a class="btn btn--ghost" href="/">Torna alla home</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .box { max-width: 46rem; }
+</style>
