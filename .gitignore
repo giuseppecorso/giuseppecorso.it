@@ -27,3 +27,7 @@ pnpm-debug.log*
 CLAUDE.md
 STATO.md
 brand/
+
+# Python
+__pycache__/
+*.pyc
