@@ -33,6 +33,7 @@ EMAIL_RE = re.compile(r"^[^@\s]{1,64}@[^@\s]{1,190}\.[^@\s.]{2,24}$")
 TOPICS = {
     "sito": "Un sito web nuovo",
     "riparazione": "Sistemare un sito esistente",
+    "automazione": "Un'automazione (PDF, Excel, dati)",
     "lavoro": "Una proposta di lavoro",
     "altro": "Altro",
 }

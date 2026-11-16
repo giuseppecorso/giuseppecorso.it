@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactForm from '../components/ContactForm.astro';
-import { SITE } from '../site';
+import { SITE, whatsappLink } from '../site';
 ---
 
 <BaseLayout
@@ -45,6 +45,11 @@ import { SITE } from '../site';
             <a class="btn btn--ghost btn--small" href={`mailto:${SITE.email}`}>Apri il programma di posta</a>
             <span class="copied" role="status" aria-live="polite"></span>
           </div>
+        </article>
+        <article class="card card--link">
+          <h3><a class="stretch" href={whatsappLink('Ciao Giuseppe, ti scrivo dal tuo sito.')} rel="noopener">WhatsApp e telefono</a></h3>
+          <p>Per una domanda veloce: scrivimi su WhatsApp o chiamami al {SITE.phone}.</p>
+          <p class="go" aria-hidden="true">Scrivimi su WhatsApp →</p>
         </article>
         <article class="card card--link">
           <h3><a class="stretch" href={SITE.linkedin} rel="noopener">LinkedIn</a></h3>

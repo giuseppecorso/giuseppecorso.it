@@ -3,13 +3,14 @@
 // which emails the message. Works without JavaScript.
 interface Props {
   /** pre-selected request type: sito | riparazione | lavoro | altro */
-  topic?: 'sito' | 'riparazione' | 'lavoro' | 'altro';
+  topic?: 'sito' | 'riparazione' | 'automazione' | 'lavoro' | 'altro';
   submitLabel?: string;
 }
 const { topic = 'altro', submitLabel = 'Invia il messaggio' } = Astro.props;
 const topics = [
   ['sito', 'Un sito web nuovo'],
   ['riparazione', 'Sistemare un sito esistente'],
+  ['automazione', "Un'automazione (PDF, Excel, dati)"],
   ['lavoro', 'Una proposta di lavoro'],
   ['altro', 'Altro'],
 ];

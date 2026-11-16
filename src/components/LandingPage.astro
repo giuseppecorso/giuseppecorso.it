@@ -4,6 +4,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactForm from './ContactForm.astro';
 import Reviews from './Reviews.astro';
+import { SITE, PRICE_NOTE, whatsappLink } from '../site';
 
 interface Plan { name: string; price: string; note: string; items: string[]; featured?: boolean }
 interface Props {
@@ -22,7 +23,9 @@ interface Props {
   included: { title: string; text: string }[];
   steps: { title: string; text: string }[];
   faq: { q: string; a: string }[];
-  topic: 'sito' | 'riparazione';
+  topic: 'sito' | 'riparazione' | 'automazione';
+  /** first message pre-written in WhatsApp */
+  whatsappText: string;
   formTitle: string;
   formLead: string;
 }
@@ -39,8 +42,9 @@ const p = Astro.props;
         <ul class="checklist">{p.points.map((x) => <li>{x}</li>)}</ul>
         <div class="btn-row">
           <a class="btn btn--primary" href="#modulo">Chiedi un preventivo gratuito</a>
-          <a class="btn btn--ghost" href="#prezzi">Vedi i prezzi</a>
+          <a class="btn btn--whatsapp" href={whatsappLink(p.whatsappText)} rel="noopener">Scrivimi su WhatsApp</a>
         </div>
+        <p class="phone-line">Preferisci parlarne? <a href={`tel:${SITE.phone.replace(/ /g, '')}`}>Chiamami al {SITE.phone}</a></p>
       </div>
       <div class="hero-media"><slot name="media" /></div>
     </div>
@@ -61,7 +65,7 @@ const p = Astro.props;
           </article>
         ))}
       </div>
-      <p class="plans-note">{p.plansNote}</p>
+      <p class="plans-note">{p.plansNote} {PRICE_NOTE}</p>
     </div>
   </section>
 
@@ -126,6 +130,7 @@ const p = Astro.props;
           <li>Ti rispondo io, per email</li>
           <li>Prezzo e tempi scritti prima di iniziare</li>
         </ul>
+        <p>Oppure <a href={whatsappLink(p.whatsappText)} rel="noopener">scrivimi su WhatsApp</a> o chiamami al <a href={`tel:${SITE.phone.replace(/ /g, '')}`}>{SITE.phone}</a>.</p>
       </div>
       <div class="card form-card">
         <ContactForm topic={p.topic} submitLabel="Chiedi il preventivo" />
@@ -138,6 +143,9 @@ const p = Astro.props;
   .hero { padding-top: 4rem; padding-bottom: 4rem; }
   .hero-inner { display: grid; gap: 2.5rem; align-items: center; }
   .hero h1 { font-size: clamp(2.1rem, 4.3vw, 3.2rem); }
+  .phone-line { margin: 1rem 0 0; color: var(--muted); }
+  .btn--whatsapp { background: #1f7a4a; border-color: #1f7a4a; color: #fff; }
+  .btn--whatsapp:hover { background: #17603a; border-color: #17603a; color: #fff; }
   .hero-media { justify-self: center; width: 100%; max-width: 30rem; }
   @media (min-width: 56rem) { .hero-inner { grid-template-columns: 1.15fr 1fr; gap: 3.5rem; } }
 

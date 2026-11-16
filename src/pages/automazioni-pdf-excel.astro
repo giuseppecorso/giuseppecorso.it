@@ -1,0 +1,150 @@
+---
+import { Image } from 'astro:assets';
+import LandingPage from '../components/LandingPage.astro';
+import invoice from '../assets/automazioni/fattura-esempio.png';
+import { SITE } from '../site';
+
+// Output of brand/demo-automazione/estrai_fatture.py run on the three invented invoices.
+const register = [
+  { supplier: 'Fornitore Alfa', number: '118/2026', date: '03/10/2026', taxable: '144,20 €', vat: '31,72 €', total: '175,92 €', check: 'OK' },
+  { supplier: 'Fornitore Beta', number: '0457', date: '12/10/2026', taxable: '122,40 €', vat: '26,93 €', total: '149,33 €', check: 'OK' },
+  { supplier: 'Fornitore Gamma', number: '77/B', date: '28/10/2026', taxable: '367,00 €', vat: '80,74 €', total: '457,74 €', check: 'Da verificare: il totale non torna, differenza di 10,00 €' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Automazioni da PDF a Excel',
+  serviceType: 'Automazione di attività d\'ufficio: estrazione dati da PDF, report Excel, macro VBA e script Python',
+  provider: { '@type': 'Person', name: SITE.name, url: 'https://giuseppecorso.it/' },
+  areaServed: 'IT',
+  offers: { '@type': 'AggregateOffer', priceCurrency: 'EUR', lowPrice: 150, offerCount: 2 },
+};
+---
+
+<LandingPage
+  title="Automazioni da PDF a Excel, macro VBA e Python — Giuseppe Corso"
+  description="Fatture, bolle, report in PDF copiati a mano in Excel? Li trasformo in un file Excel ordinato e controllato, in automatico. Prova gratuita sui tuoi file, automazioni da 150 €."
+  jsonLd={jsonLd}
+  eyebrow="Automazioni per l'ufficio"
+  headline={['Dai PDF a Excel', 'in un clic.']}
+  lead="Fatture, bolle, estratti conto, report: se ogni mese copi a mano dati da PDF a Excel, costruisco lo strumento che lo fa al posto tuo. E controlla che i numeri tornino."
+  points={[
+    'Prova gratuita: mandami tre file e ti dico se si può fare',
+    'Controllo dei totali: gli errori vengono segnalati, mai corretti a caso',
+    'Python o Excel/VBA: lo strumento gira sul tuo computer',
+  ]}
+  plansTitle="Tre passi, nessuna sorpresa"
+  plansNote="Ogni PDF è diverso: il prezzo definitivo lo trovi nel preventivo, dopo la prova gratuita sui tuoi file."
+  plans={[
+    {
+      name: 'Prova gratuita',
+      price: '0 €',
+      note: 'Per capire se si può fare.',
+      items: [
+        'Mi mandi tre file di esempio',
+        'Ti dico se i dati si possono estrarre in modo affidabile',
+        'Ricevi il preventivo con prezzo e tempi',
+      ],
+    },
+    {
+      name: 'Automazione semplice',
+      price: 'da 150 €',
+      note: 'Un tipo di documento, un file Excel.',
+      featured: true,
+      items: [
+        'Legge tutti i PDF di una cartella',
+        'Crea il file Excel con le colonne che ti servono',
+        'Controlla i totali e segnala le anomalie',
+        'Istruzioni per usarlo da solo',
+      ],
+    },
+    {
+      name: 'Su misura',
+      price: 'su preventivo',
+      note: 'Per i flussi più complessi.',
+      items: [
+        'Più tipi di documento o di fornitore',
+        'Incrocio con altri file Excel o CSV',
+        'Macro VBA dentro i tuoi file di lavoro',
+        'Report mensili pronti da inviare',
+      ],
+    },
+  ]}
+  includedTitle="Cosa fa per te"
+  included={[
+    { title: 'Ti restituisce ore', text: 'Il lavoro che oggi fai a mano ogni mese diventa un clic. Tu controlli solo le righe segnalate.' },
+    { title: 'Non indovina', text: 'Se un totale non torna o un campo manca, la riga viene segnalata con il motivo. Nessun numero aggiustato in silenzio.' },
+    { title: 'Resta tuo', text: 'Lo strumento gira sul tuo computer: i tuoi documenti non passano da servizi online.' },
+  ]}
+  steps={[
+    { title: 'Mi descrivi il lavoro', text: 'Che documenti ricevi, cosa copi oggi a mano e in quale file Excel.' },
+    { title: 'Prova gratuita', text: 'Mi mandi tre file di esempio, anche con i dati sensibili oscurati: ti dico se si può fare e quanto costa.' },
+    { title: 'Costruisco lo strumento', text: 'Lo provo sui tuoi esempi finché ogni totale torna.' },
+    { title: 'Lo usi da solo', text: 'Ti consegno lo strumento e le istruzioni. Se cambia il formato dei documenti, lo aggiorno.' },
+  ]}
+  faq={[
+    { q: 'Funziona con qualsiasi PDF?', a: 'Funziona bene con i PDF creati da un programma, come fatture e report. I documenti scansionati o fotografati sono più difficili: con la prova gratuita lo scopri prima di spendere.' },
+    { q: 'Ho bisogno di installare qualcosa?', a: 'Dipende dalla soluzione: con una macro Excel no; con uno script Python ti preparo tutto io e ti spiego come avviarlo con un doppio clic.' },
+    { q: 'I miei dati restano riservati?', a: 'Lo strumento lavora sul tuo computer. Per la prova bastano file di esempio: puoi oscurare nomi e dati personali prima di mandarmeli.' },
+    { q: 'E se un mese il formato cambia?', a: 'Lo strumento segnala i documenti che non riesce a leggere invece di riempire il file con dati sbagliati. L\'aggiornamento lo concordiamo nel preventivo.' },
+  ]}
+  topic="automazione"
+  whatsappText="Ciao Giuseppe, vorrei automatizzare un lavoro con PDF ed Excel."
+  formTitle="Raccontami cosa copi a mano"
+  formLead="Dimmi che documenti ricevi e cosa ci fai ogni mese: ti rispondo e organizziamo la prova gratuita."
+>
+  <Image
+    slot="media"
+    src={invoice}
+    alt="Esempio di fattura in PDF con dati inventati: fornitore, righe, imponibile, IVA e totale"
+    widths={[480, 960]}
+    sizes="(min-width: 56rem) 480px, 92vw"
+    loading="eager"
+    fetchpriority="high"
+    class="hero-invoice"
+  />
+
+  <section slot="example" class="section section--soft" aria-labelledby="demo">
+    <div class="container">
+      <p class="eyebrow">Demo con dati inventati</p>
+      <h2 id="demo">Tre fatture PDF, un registro Excel</h2>
+      <p class="lead">
+        Ho creato tre fatture di fornitori immaginari e ho fatto girare lo strumento. La terza ha un errore messo
+        apposta: il totale stampato è più alto di 10 €. Ecco il risultato.
+      </p>
+      <div class="table-wrap" role="region" aria-label="Registro fatture creato dallo strumento" tabindex="0">
+        <table>
+          <thead>
+            <tr><th>Fornitore</th><th>Numero</th><th>Data</th><th>Imponibile</th><th>IVA</th><th>Totale</th><th>Controllo</th></tr>
+          </thead>
+          <tbody>
+            {register.map((r) => (
+              <tr class:list={{ bad: r.check !== 'OK' }}>
+                <td>{r.supplier}</td><td>{r.number}</td><td>{r.date}</td>
+                <td class="num">{r.taxable}</td><td class="num">{r.vat}</td><td class="num">{r.total}</td>
+                <td>{r.check}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="downloads">
+        Scarica i file della demo: <a href="/demo/fattura-esempio.pdf" download>la fattura con l'errore (PDF)</a> ·
+        <a href="/demo/registro-fatture-esempio.xlsx" download>il registro creato (Excel)</a>
+      </p>
+    </div>
+  </section>
+</LandingPage>
+
+<style is:global>
+  .hero-invoice { width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--line); background: #fff; box-shadow: 0 18px 40px rgba(35, 38, 43, .18); transform: rotate(-1.5deg); }
+  .table-wrap { margin-top: 2rem; overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; }
+  .table-wrap table { width: 100%; border-collapse: collapse; font-size: .95rem; min-width: 46rem; }
+  .table-wrap th { background: var(--accent); color: #fff; text-align: left; font-weight: 600; padding: .7rem .8rem; }
+  .table-wrap td { padding: .7rem .8rem; border-top: 1px solid var(--line); vertical-align: top; }
+  .table-wrap td.num { text-align: right; white-space: nowrap; }
+  .table-wrap tr.bad td { background: #fde2e1; }
+  .table-wrap tr.bad td:last-child { font-weight: 600; color: #8a1f1a; }
+  .downloads { margin: 1.25rem 0 0; }
+</style>
