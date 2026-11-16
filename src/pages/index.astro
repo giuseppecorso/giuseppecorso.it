@@ -30,7 +30,7 @@ const jsonLd = {
     <div class="container hero-inner">
       <div>
         <p class="eyebrow">Giuseppe Corso · sviluppatore</p>
-        <h1>Costruisco software che fa <span class="mark">risparmiare tempo</span>.</h1>
+        <h1>Soluzioni digitali che ti fanno <span class="mark">risparmiare tempo</span>.</h1>
         <p class="lead">
           Sono Giuseppe, ingegnere con curriculum informatico: sviluppo applicazioni web e siti, e li porto
           online, dal codice al server.
@@ -135,9 +135,10 @@ const jsonLd = {
 <style>
   .hero { padding-top: 4.5rem; padding-bottom: 4.5rem; }
   .hero-inner { display: grid; gap: 2.5rem; align-items: center; }
+  .hero h1 { font-size: clamp(2.1rem, 4.3vw, 3.2rem); max-width: 17em; }
   .character { justify-self: center; width: min(70vw, 360px); height: auto; mix-blend-mode: multiply; }
   @media (min-width: 48rem) {
-    .hero-inner { grid-template-columns: 1fr auto; gap: 4rem; }
+    .hero-inner { grid-template-columns: 1fr auto; gap: 3rem; }
   }
   .doors { margin-top: 2rem; }
   .num { font-family: var(--font-display); font-size: 1rem; color: var(--accent); margin: 0 0 1.25rem; letter-spacing: .08em; }
