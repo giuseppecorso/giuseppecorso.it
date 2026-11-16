@@ -40,7 +40,7 @@ const rendered = await Promise.all(progetti.map(async (p) => ({ p, Content: (awa
     </div>
     <div class="track" tabindex="0" role="group" aria-label="Schede dei progetti software">
       {rendered.map(({ p }, i) => (
-        <article class="slide card" id={p.id} role="group" aria-roledescription="slide" aria-label={`${i + 1} di ${rendered.length}`}>
+        <div class="slide card" id={p.id} role="group" aria-roledescription="slide" aria-label={`${i + 1} di ${rendered.length}`}>
           <p class="num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</p>
           <h3>{p.data.title}</h3>
           <p class="summary">{p.data.summary}</p>
@@ -48,7 +48,7 @@ const rendered = await Promise.all(progetti.map(async (p) => ({ p, Content: (awa
             {p.data.tech.slice(0, 5).map((t) => <li>{t}</li>)}
           </ul>
           <button type="button" class="open" command="show-modal" commandfor={`scheda-${p.id}`}>Apri la scheda →</button>
-        </article>
+        </div>
       ))}
     </div>
     <p class="visually-hidden" role="status" aria-live="polite"></p>
@@ -71,7 +71,7 @@ const rendered = await Promise.all(progetti.map(async (p) => ({ p, Content: (awa
     </div>
     <div class="track" tabindex="0" role="group" aria-label="Schede dei siti web">
       {clienti.map((c, i) => (
-        <article class="slide card site" role="group" aria-roledescription="slide" aria-label={`${i + 1} di ${clienti.length}`}>
+        <div class="slide card site" role="group" aria-roledescription="slide" aria-label={`${i + 1} di ${clienti.length}`}>
           <Image src={c.data.screenshot} alt={c.data.screenshotAlt} widths={[400, 800]} sizes="(min-width: 48rem) 400px, 82vw" class="shot" />
           <div class="site-body">
             <h3>{c.data.title}</h3>
@@ -81,7 +81,7 @@ const rendered = await Promise.all(progetti.map(async (p) => ({ p, Content: (awa
             </ul>
             <button type="button" class="open" command="show-modal" commandfor={`scheda-sito-${c.id}`}>Apri la scheda →</button>
           </div>
-        </article>
+        </div>
       ))}
     </div>
     <p class="visually-hidden" role="status" aria-live="polite"></p>
