@@ -16,6 +16,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   </section>
 </BaseLayout>
 
+<script>
+  // message delivered: forget the saved draft of the contact form
+  try {
+    sessionStorage.removeItem('contact-draft');
+  } catch {
+    // ignore
+  }
+</script>
+
 <style>
   .box { max-width: 46rem; }
 </style>

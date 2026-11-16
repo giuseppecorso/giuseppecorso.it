@@ -57,6 +57,36 @@ const topics = [
   <p class="hint">Ti rispondo per email. Nessuna newsletter, nessun dato ceduto ad altri.</p>
 </form>
 
+<script>
+  // Keep what the visitor typed (this browser tab only) so that after an error,
+  // or a click on "Riprova", the form comes back filled in. Cleared on the thank-you page.
+  // The consent box is never restored: it has to be ticked again on purpose.
+  const KEY = 'contact-draft';
+  const FIELDS = ['name', 'email', 'topic', 'message'];
+  const form = document.querySelector<HTMLFormElement>('.contact-form');
+  if (form) {
+    const control = (n: string) => form.elements.namedItem(n) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null;
+    try {
+      const draft = JSON.parse(sessionStorage.getItem(KEY) ?? '{}');
+      for (const n of FIELDS) {
+        const el = control(n);
+        if (el && typeof draft[n] === 'string' && draft[n] !== '') el.value = draft[n];
+      }
+    } catch {
+      // storage blocked or empty: the form simply starts blank
+    }
+    const save = () => {
+      try {
+        sessionStorage.setItem(KEY, JSON.stringify(Object.fromEntries(FIELDS.map((n) => [n, control(n)?.value ?? '']))));
+      } catch {
+        // ignore
+      }
+    };
+    form.addEventListener('input', save);
+    form.addEventListener('submit', save);
+  }
+</script>
+
 <style>
   .contact-form { display: grid; gap: 1.1rem; }
   .two { display: grid; gap: 1.1rem; }
