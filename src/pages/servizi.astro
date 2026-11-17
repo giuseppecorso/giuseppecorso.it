@@ -1,0 +1,154 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Reviews from '../components/Reviews.astro';
+import character from '../assets/personaggio/personaggio-attrezzi.jpg';
+import { SITE, PRICE_NOTE, whatsappLink } from '../site';
+
+// Services with a fixed starting price: each one has its own landing page.
+const services = [
+  {
+    href: '/sito-web-bb/',
+    title: 'Sito web per B&B e case vacanze',
+    price: 'da 490 €',
+    text: 'Responsive e con SEO inclusa, online in 48 ore dalla consegna di foto e testi.',
+  },
+  {
+    href: '/riparazione-sito-wordpress/',
+    title: 'Riparazione siti WordPress',
+    price: 'da 49 €',
+    text: 'Errori, lentezza, plugin in conflitto: diagnosi e preventivo gratuiti prima di iniziare.',
+  },
+  {
+    href: '/automazioni-pdf-excel/',
+    title: 'Automazioni da PDF a Excel',
+    price: 'da 150 €',
+    text: 'Fatture e report copiati a mano diventano un file Excel controllato. Prova gratuita sui tuoi file.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'OfferCatalog',
+  name: 'Servizi di Giuseppe Corso',
+  url: 'https://giuseppecorso.it/servizi/',
+  itemListElement: services.map((s) => ({
+    '@type': 'Offer',
+    itemOffered: { '@type': 'Service', name: s.title, url: new URL(s.href, 'https://giuseppecorso.it').href },
+  })),
+};
+---
+
+<BaseLayout
+  title="Servizi e prodotti — siti web, riparazioni WordPress, automazioni | Giuseppe Corso"
+  description="Siti per B&B da 490 €, riparazioni WordPress da 49 €, automazioni da PDF a Excel da 150 €. E poi WooCommerce, PrestaShop, applicazioni web su misura. Preventivo gratuito."
+  jsonLd={jsonLd}
+>
+  <section class="section intro">
+    <div class="container intro-inner">
+      <div>
+        <p class="eyebrow">Servizi e prodotti</p>
+        <h1>Tutto quello che posso <span class="mark">fare per te</span></h1>
+        <p class="lead">
+          Siti web, negozi online, riparazioni e automazioni: lavoro con WordPress dal 2013 e sviluppo applicazioni
+          su misura. Prezzi chiari e preventivo gratuito.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="/contatti/">Chiedi un preventivo gratuito</a>
+          <a class="btn btn--whatsapp" href={whatsappLink('Ciao Giuseppe, ti scrivo dalla pagina dei servizi.')} rel="noopener">Scrivimi su WhatsApp</a>
+        </div>
+        <p class="phone-line">Preferisci parlarne? <a href={`tel:${SITE.phone.replace(/ /g, '')}`}>Chiamami al {SITE.phone}</a></p>
+      </div>
+      <Image
+        src={character}
+        alt="Giuseppe Corso disegnato a matita con un portatile aperto in mano"
+        widths={[340, 680]}
+        sizes="(min-width: 48rem) 340px, 70vw"
+        loading="eager"
+        fetchpriority="high"
+        class="character"
+      />
+    </div>
+  </section>
+
+  <section class="section band" aria-labelledby="prezzo-chiaro">
+    <div class="container">
+      <p class="eyebrow">Con prezzo chiaro</p>
+      <h2 id="prezzo-chiaro">Tre servizi pronti da chiedere</h2>
+      <div class="grid grid--3 services">
+        {services.map((s) => (
+          <div class="card card--link card--top service">
+            <h3><a class="stretch" href={s.href}>{s.title}</a></h3>
+            <p class="price">{s.price}</p>
+            <p>{s.text}</p>
+            <p class="go" aria-hidden="true">Scopri l'offerta →</p>
+          </div>
+        ))}
+      </div>
+      <p class="note">{PRICE_NOTE}</p>
+    </div>
+  </section>
+
+  <section class="section section--soft" aria-labelledby="preventivo">
+    <div class="container">
+      <p class="eyebrow">Su preventivo</p>
+      <h2 id="preventivo">Altri lavori che faccio</h2>
+      <div class="grid grid--3 services">
+        <div class="card">
+          <h3>WordPress e WooCommerce</h3>
+          <p>Siti e negozi online responsive e ottimizzati SEO, personalizzazioni di temi e plugin in HTML, CSS e PHP.</p>
+        </div>
+        <div class="card">
+          <h3>PrestaShop</h3>
+          <p>Negozi nuovi e cataloghi con migliaia di articoli: importazioni ed esportazioni da listini, automazioni per la vendita su eBay, pulizia dei dati.</p>
+        </div>
+        <div class="card">
+          <h3>Applicazioni web su misura</h3>
+          <p>Gestionali e strumenti interni con Java/Spring Boot, Python e Angular, dal codice al server. <a href="/progetti/">Guarda i progetti</a>.</p>
+        </div>
+      </div>
+      <p class="fiverr">
+        Preferisci un incarico con pagamento gestito da una piattaforma? Trovi gli stessi servizi <a href={SITE.fiverr} rel="noopener">sul mio profilo Fiverr</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section band band--sun" aria-labelledby="prodotti">
+    <div class="container kit">
+      <div>
+        <p class="eyebrow">Prodotti · in arrivo</p>
+        <h2 id="prodotti">Kit Host Italia</h2>
+        <p class="lead">
+          Un template per aiutare chi gestisce B&B, case vacanze e strutture ricettive a tenere in ordine la
+          parte fiscale.
+        </p>
+      </div>
+      <a class="btn btn--solid" href="/kit-host-italia/">Fatti avvisare quando esce</a>
+    </div>
+  </section>
+
+  <Reviews />
+</BaseLayout>
+
+<style>
+  .intro-inner { display: grid; gap: 2.5rem; align-items: center; }
+  .intro h1 { font-size: clamp(2.1rem, 4.3vw, 3.2rem); }
+  .character { justify-self: center; width: min(70vw, 340px); height: auto; mix-blend-mode: multiply; }
+  @media (min-width: 48rem) {
+    .intro-inner { grid-template-columns: 1fr auto; gap: 4rem; }
+  }
+  .phone-line { margin: 1rem 0 0; color: var(--muted); }
+  .btn--whatsapp { background: #1f7a4a; border-color: #1f7a4a; color: #fff; }
+  .btn--whatsapp:hover { background: #17603a; border-color: #17603a; color: #fff; }
+
+  .services { margin-top: 2rem; }
+  .service .price { font-family: var(--font-display); font-size: 2.2rem; line-height: 1.1; margin: .25rem 0 .75rem; color: var(--accent-dark); }
+  .service .go { margin: 0; }
+  .note { margin: 1.5rem 0 0; color: #e9f5f3; }
+  .fiverr { margin: 1.75rem 0 0; max-width: 46rem; }
+
+  .kit { display: grid; gap: 1.5rem; align-items: center; }
+  .kit h2 { margin-bottom: .5rem; }
+  .kit .lead { margin: 0; }
+  @media (min-width: 56rem) { .kit { grid-template-columns: 1fr auto; gap: 3rem; } }
+</style>

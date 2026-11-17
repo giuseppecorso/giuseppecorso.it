@@ -33,5 +33,7 @@ mv -Tf $base/current.tmp $base/current
 ls -1dt $base/releases/* | tail -n +6 | xargs -r rm -rf
 echo "Live: `$(readlink $base/current)"
 "@
+# UTF-8 without BOM: a BOM in front of "set -e" would make bash skip it.
+[Console]::InputEncoding = New-Object System.Text.UTF8Encoding $false
 $remote -replace "`r", '' | ssh $server 'bash -s'
 if ($LASTEXITCODE -ne 0) { throw 'Remote activation failed' }

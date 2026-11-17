@@ -64,8 +64,7 @@ const path = Astro.url.pathname;
         <nav id="menu" aria-label="Principale">
           <ul>
             <li><a href="/progetti/" aria-current={path.startsWith('/progetti') ? 'page' : undefined}>Progetti</a></li>
-            <li><a href="/kit-host-italia/" aria-current={path.startsWith('/kit-host-italia') ? 'page' : undefined}>Kit Host Italia</a></li>
-            <li><a href="/assistenza/" aria-current={path.startsWith('/assistenza') ? 'page' : undefined}>Assistenza</a></li>
+            <li><a href="/servizi/" aria-current={path.startsWith('/servizi') ? 'page' : undefined}>Servizi</a></li>
             <li><a href="/chi-sono/" aria-current={path.startsWith('/chi-sono') ? 'page' : undefined}>Chi sono</a></li>
             <li><a class="btn btn--primary btn--small" href="/contatti/" aria-current={path.startsWith('/contatti') ? 'page' : undefined}>Scrivimi</a></li>
           </ul>
@@ -117,6 +116,7 @@ const path = Astro.url.pathname;
         <p>© {new Date().getFullYear()} {SITE.name}</p>
         <ul>
           <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+          <li><a href="/servizi/">Servizi</a></li>
           <li><a href="/sito-web-bb/">Siti per B&B</a></li>
           <li><a href="/riparazione-sito-wordpress/">Riparazioni WordPress</a></li>
           <li><a href="/automazioni-pdf-excel/">Automazioni PDF ed Excel</a></li>
